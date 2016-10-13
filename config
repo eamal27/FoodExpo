@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+	logallrefupdates = false
+	precomposeunicode = true
+[remote "MobileProject"]
+	url = https://github.com/eamal27/FoodExpo.git
+	fetch = +refs/heads/*:refs/remotes/MobileProject/*
