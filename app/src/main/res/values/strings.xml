@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">FoodExpo</string>
-    <string name="food_expo">Food Expo</string>
+    <string name="food_expo">Welcome to Food Expo!</string>
     <string name="login_user">Login As User</string>
     <string name="login_restaurant">Login As Restaurant</string>
     <string name="login_id">Login ID:</string>
@@ -8,4 +8,15 @@
     <string name="password">Password:</string>
     <string name="not_a_user">Not a user? Click here to go back</string>
     <string name="not_a_restaurant">Not a restaurant? Click here to go back</string>
+    <string name="signup">Sign Up</string>
+    <string name="lbl_signup_accountType">Account type:</string>
+    <string name="lbl_first_name">First Name:</string>
+    <string name="lbl_last_name">Last Name:</string>
+    <string name="lbl_email">Email:</string>
+    <string name="btn_user_signup">User</string>
+    <string name="btn_restaurant_signup">Restaurant</string>
+    <string name="lbl_sign_up">Sign up as</string>
+    <string name="label_address">Address:</string>
+    <string name="lbl_restaurant_name">Restaurant Name:</string>
+    <string name="lbl_business_id">Business ID:</string>
 </resources>

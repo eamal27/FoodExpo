@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void goBack(View view){
-        Intent goBack = new Intent(this, WelcomeActivity.class);
-        startActivity(goBack);
+        finish();
     }
 }

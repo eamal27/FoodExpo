@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_sign_up_restaurant"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context="com.example.eamal27.foodexpo.SignUpRestaurantActivity">
+
+    <TextView
+        android:id="@+id/lbl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Restaurant Account Setup"
+        android:textSize="12pt"/>
+
+    <TextView
+        android:id="@+id/lbl_restaurantName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_restaurant_name"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/edittext_restaurantName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:minWidth="200dp"/>
+
+    <TextView
+        android:id="@+id/lbl_businessId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_business_id"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/edittext_businessId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:minWidth="200dp"/>
+
+    <TextView
+        android:id="@+id/lbl_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_address"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/edittext_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:minWidth="250dp"/>
+
+</LinearLayout>

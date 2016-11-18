@@ -17,7 +17,12 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".UserMainActivity" />
-        <activity android:name=".RestaurantMainActivity"></activity>
+        <activity android:name=".RestaurantMainActivity" />
+        <activity
+            android:name=".SignUpActivity"
+            android:label="Sign Up" />
+        <activity android:name=".SignUpUserActivity" />
+        <activity android:name=".SignUpRestaurantActivity"></activity>
     </application>
 
 </manifest>
