@@ -15,8 +15,10 @@
     <string name="lbl_email">Email:</string>
     <string name="btn_user_signup">User</string>
     <string name="btn_restaurant_signup">Restaurant</string>
-    <string name="lbl_sign_up">Sign up as</string>
+    <string name="lbl_sign_up">Please select account type</string>
     <string name="label_address">Address:</string>
     <string name="lbl_restaurant_name">Restaurant Name:</string>
     <string name="lbl_business_id">Business ID:</string>
+    <string name="button_sign_up_submit">Submit</string>
+    <string name="logo">Logo</string>
 </resources>

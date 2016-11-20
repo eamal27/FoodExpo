@@ -15,14 +15,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="Login"/>
         <activity android:name=".UserMainActivity" />
         <activity android:name=".RestaurantMainActivity" />
         <activity
             android:name=".SignUpActivity"
             android:label="Sign Up" />
-        <activity android:name=".SignUpUserActivity" />
-        <activity android:name=".SignUpRestaurantActivity"></activity>
+        <activity
+            android:name=".SignUpUserActivity"
+            android:label="User Registration"/>
+        <activity
+            android:name=".SignUpRestaurantActivity"
+            android:label="Restaurant Registration">
+        </activity>
     </application>
 
 </manifest>

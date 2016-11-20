@@ -10,21 +10,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.eamal27.foodexpo.LoginActivity">
 
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/food_expo"
-        />
-
     <TextView
         android:id="@+id/loginType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/getUsername"
-        />
+        android:layout_alignParentTop="true"
+        android:textSize="12pt"/>
 
     <EditText
         android:id="@id/getUsername"
