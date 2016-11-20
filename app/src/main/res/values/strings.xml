@@ -8,6 +8,7 @@
     <string name="password">Password:</string>
     <string name="not_a_user">Not a user? Click here to go back</string>
     <string name="not_a_restaurant">Not a restaurant? Click here to go back</string>
+    <string name="order">Order Now!</string>
     <string name="signup">Sign Up</string>
     <string name="lbl_signup_accountType">Account type:</string>
     <string name="lbl_first_name">First Name:</string>

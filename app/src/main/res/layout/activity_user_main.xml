@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_user_main"
     android:layout_width="match_parent"
@@ -9,5 +10,77 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.eamal27.foodexpo.UserMainActivity">
+
+    <Button
+        android:id="@+id/prevButton"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/restaurantName" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/prevButton"
+        android:layout_toEndOf="@id/prevButton"
+        android:layout_toLeftOf="@+id/nextButton"
+        android:layout_toStartOf="@id/nextButton"
+        android:layout_above="@+id/restaurantName"
+        android:id="@+id/itemPicture" />
+
+    <Button
+        android:id="@id/nextButton"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/restaurantName" />
+
+    <Button
+        android:id="@+id/orderButton"
+        android:text="@string/order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+
+    <ToggleButton
+        android:id="@+id/favouriteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:textOff=""
+        android:textOn=""
+        android:paddingTop="15dp"
+        android:background="@android:drawable/star_off"
+        />
+
+    <TextView
+        android:id="@+id/restaurantName"
+        android:text="Placeholder Restaurant"
+        android:textSize="24sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/favouriteButton"
+        android:layout_toEndOf="@id/favouriteButton"
+        android:paddingTop="10dp"
+        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        android:id="@+id/priceLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/orderButton"
+        />
+
 
 </RelativeLayout>
