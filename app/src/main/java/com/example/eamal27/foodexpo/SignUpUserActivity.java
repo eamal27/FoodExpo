@@ -15,4 +15,6 @@ public class SignUpUserActivity extends AppCompatActivity {
     public void submitUserRegistration(View view) {
 
     }
+
+    //Todo: at some point in the sign up user we should ask them for a delivery location which they can change later
 }
