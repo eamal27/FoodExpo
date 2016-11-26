@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lbl_phone"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/edittext_phone"
@@ -71,34 +71,32 @@
         android:inputType="phone"
         android:minWidth="250dp"/>
 
-    <Button android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/typeLocation"
-        android:id="@+id/enter"
-        android:layout_gravity="center"
-        android:onClick="getTextAddress"/>
-
     <TextView
-        android:id="@+id/orLabel"
-        android:text="@string/or"
-        android:layout_gravity="center"
+        android:id="@+id/lbl_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_password"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/edittext_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
-
-
-    <Button android:layout_width="wrap_content"
+        android:inputType="textPassword"
+        android:minWidth="250dp"/>
+    <EditText
+        android:id="@+id/edittext_password_confirm"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/mapLocation"
-        android:id="@+id/clear"
-        android:layout_gravity="bottom"/>
+        android:inputType="textPassword"
+        android:minWidth="250dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_sign_up_submit"
+        android:text="@string/typeLocation"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:onClick="submitUserRegistration"/>
+        android:layout_marginTop="10dp"
+        android:onClick="getLocation"/>
 
 </LinearLayout>

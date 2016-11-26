@@ -31,7 +31,7 @@ public class SignUpUserActivity extends AppCompatActivity {
 
     }
 
-    public void getTextAddress(View view){
+    public void getLocation(View view){
         Intent getAddress = new Intent(this, GetAddressText.class);
         startActivityForResult(getAddress,getTextAddress);
     }
@@ -54,12 +54,12 @@ public class SignUpUserActivity extends AppCompatActivity {
                 address.setCountryName(country);
                 address.setPostalCode(postal);
 
-                displayAddress();
+                loginNewUser();
             }
         }
     }
 
-    private void displayAddress(){
+    private void loginNewUser(){
 
 
     }

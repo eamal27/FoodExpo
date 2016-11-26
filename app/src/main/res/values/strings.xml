@@ -16,6 +16,7 @@
     <string name="lbl_email">Email:</string>
     <string name="btn_user_signup">User</string>
     <string name="btn_restaurant_signup">Restaurant</string>
+    <string name="lbl_city">City:</string>
     <string name="lbl_prov">Province:</string>
     <string name="lbl_country">Country:</string>
     <string name="lbl_postal">Postal Code:</string>
@@ -24,10 +25,12 @@
     <string name="lbl_restaurant_name">Restaurant Name:</string>
     <string name="lbl_business_id">Business ID:</string>
     <string name="lbl_phone">Phone</string>
+    <string name="lbl_password">Password:</string>
     <string name="button_sign_up_submit">Submit</string>
     <string name="logo">Logo</string>
     <string name="user_acct_setup">User Account Setup</string>
-    <string name="typeLocation">Enter your delivery location</string>
-    <string name="mapLocation">Use Google Maps to set your delivery location</string>
+    <string name="typeLocation">Enter Your Delivery Location</string>
+    <string name="setLocation">Set As Delivery Location</string>
+    <string name="mapLocation">Use Google Maps</string>
     <string name="or">OR</string>
 </resources>
