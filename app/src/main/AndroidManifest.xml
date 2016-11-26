@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.eamal27.foodexpo">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
-           />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -25,11 +26,15 @@
             android:name=".SignUpActivity"
             android:label="Sign Up" />
         <activity android:name=".SignUpUserActivity" />
-        <activity android:name=".SignUpRestaurantActivity"></activity>
+        <activity android:name=".SignUpRestaurantActivity" />
+
+        <uses-library android:name="com.google.android.maps" />
 
         <meta-data
-                    android:name="com.google.android.geo.API_KEY"
-                    android:value="AIzaSyACF3pNIZYgN7gZv6jxWRkjzmBM3exj0rc" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyACF3pNIZYgN7gZv6jxWRkjzmBM3exj0rc" />
+
+        <activity android:name=".GetAddressText"></activity>
     </application>
 
 </manifest>
