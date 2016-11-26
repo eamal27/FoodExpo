@@ -10,14 +10,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.eamal27.foodexpo.GetAddressMap">
 
+
+    <Button
+        android:id="@+id/submitLocation"
+        android:text="@string/setLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="setLocation"
+        />
+
     <fragment
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@id/submitLocation"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         />
+
 
 </RelativeLayout>

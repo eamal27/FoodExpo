@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lbl_first_name"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/edittext_firstName"
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lbl_last_name"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/edittext_lastName"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lbl_email"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/edittext_email"
