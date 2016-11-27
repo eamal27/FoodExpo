@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -69,7 +70,9 @@ public class GetAddressMap extends FragmentActivity implements OnMapReadyCallbac
                 e.printStackTrace();
             }
         }
-        LatLng location = new LatLng();
+
+        // temporary jus to run the app
+        LatLng location = new LatLng(37.0,-76.2);
 
         return location;
     }
@@ -83,16 +86,24 @@ public class GetAddressMap extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location){
+        Log.d("LocationSample", "onLocationChanged(" + location + ")");
+
 
     }
 
     @Override
-    public void onProviderDisabled(String provider) {}
+    public void onProviderDisabled(String provider) {
+        Log.d("LocationSample", "onProviderDisabled(" + provider + ")");
+    }
 
     @Override
-    public void onProviderEnabled(String provider) {}
+    public void onProviderEnabled(String provider) {
+        Log.d("LocationSample", "onProviderEnabled(" + provider + ")");
+    }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("LocationSample", "onStatusChanged(" + provider + ", " + status + ", extras)");
+    }
 
 }
