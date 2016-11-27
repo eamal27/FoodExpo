@@ -34,7 +34,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyACF3pNIZYgN7gZv6jxWRkjzmBM3exj0rc" />
 
-        <activity android:name=".GetAddressText" />
+        <activity android:name=".GetAddress" />
         <activity android:name=".GetAddressMap"></activity>
     </application>
 

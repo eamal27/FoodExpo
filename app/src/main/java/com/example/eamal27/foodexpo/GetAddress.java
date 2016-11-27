@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class GetAddressText extends AppCompatActivity {
+public class GetAddress extends AppCompatActivity {
 
     public static final int getAddressMap = 3333;
     @Override

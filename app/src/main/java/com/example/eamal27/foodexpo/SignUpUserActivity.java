@@ -32,7 +32,7 @@ public class SignUpUserActivity extends AppCompatActivity {
     }
 
     public void getLocation(View view){
-        Intent getAddress = new Intent(this, GetAddressText.class);
+        Intent getAddress = new Intent(this, GetAddress.class);
         startActivityForResult(getAddress,getTextAddress);
     }
 
