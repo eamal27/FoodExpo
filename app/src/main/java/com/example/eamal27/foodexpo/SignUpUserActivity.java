@@ -1,10 +1,13 @@
 package com.example.eamal27.foodexpo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -27,13 +30,12 @@ public class SignUpUserActivity extends AppCompatActivity {
         address = new Address(locale);
     }
 
-    public void submitUserRegistration(View view) {
-
-    }
 
     public void getLocation(View view){
-        Intent getAddress = new Intent(this, GetAddress.class);
-        startActivityForResult(getAddress,getTextAddress);
+        if (checkPage()) {
+            Intent getAddress = new Intent(this, GetAddress.class);
+            startActivityForResult(getAddress, getTextAddress);
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent result){
@@ -59,9 +61,80 @@ public class SignUpUserActivity extends AppCompatActivity {
         }
     }
 
+    // This function checks all the forms on the page and makes sure that they are all filled in
+    // and that the passwords match each other
+    private boolean checkPage(){
+        EditText firstNameET = (EditText)findViewById(R.id.edittext_firstName);
+        EditText lastNameET = (EditText)findViewById(R.id.edittext_lastName);
+        EditText emailET = (EditText)findViewById(R.id.edittext_email);
+        EditText phoneET = (EditText)findViewById(R.id.edittext_phone);
+        EditText passwordET = (EditText)findViewById(R.id.edittext_password);
+        EditText passwordConfirmET = (EditText)findViewById(R.id.edittext_password_confirm);
+
+        String firstName = firstNameET.getText().toString();
+        String lastName = lastNameET.getText().toString();
+        String email = emailET.getText().toString();
+        String phone = phoneET.getText().toString();
+        String password = passwordET.getText().toString();
+        String passwordConfirm = passwordConfirmET.getText().toString();
+
+        Context context = getApplicationContext();
+        String errorMessage="";
+        int duration = Toast.LENGTH_SHORT;
+        boolean showError = false;
+        EditText toFocus = firstNameET;
+
+        if (firstName.equals("")){
+            errorMessage = "Please enter your first name";
+            showError=true;
+            toFocus = firstNameET;
+        } else if (lastName.equals("")){
+            errorMessage = "Please enter your last name";
+            showError=true;
+            toFocus = lastNameET;
+        } else if (email.equals("")){
+            errorMessage = "Please enter your email";
+            showError=true;
+            toFocus = emailET;
+        } else if (phone.equals("")){
+            errorMessage = "Please enter your phone number";
+            showError=true;
+            toFocus = phoneET;
+        } else if (password.equals("")){
+            errorMessage = "Please enter a passowrd";
+            showError=true;
+            toFocus = passwordET;
+        } else if (!password.equals(passwordConfirm)){
+            errorMessage = "Passwords do not match";
+            showError=true;
+            toFocus = passwordET;
+        }
+        // If an error was found we will display the toast and return false
+        // If no error was found we will return true
+
+        if (showError){
+            Toast.makeText(context,errorMessage,duration).show();
+            toFocus.requestFocus();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private void loginNewUser(){
 
-
+        if (createNewUser()) {
+            // Launch the user main intent with the new email address
+            Intent loadUserMain = new Intent(this, UserMainActivity.class);
+            EditText getEmail = (EditText) findViewById(R.id.edittext_email);
+            String email = getEmail.getText().toString();
+            loadUserMain.putExtra("email", email);
+            loadUserMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(loadUserMain);
+        }
     }
-    //Todo: at some point in the sign up user we should ask them for a delivery location which they can change later
+
+    private boolean createNewUser(){
+        return true;
+    }
 }

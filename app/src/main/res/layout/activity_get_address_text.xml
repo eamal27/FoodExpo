@@ -102,11 +102,10 @@
             android:layout_height="wrap_content"
             android:text="@string/button_sign_up_submit"
             android:id="@+id/enter"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
             android:onClick="submitAddress"/>
 
-
+<!--
         <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mapLocation"
@@ -115,6 +114,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom"
             android:onClick="getLocationFromMap"/>
+            -->
     </RelativeLayout>
 
 

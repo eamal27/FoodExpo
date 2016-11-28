@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             //For now just send them on through!
 
             Intent successfulLogin = new Intent(this, UserMainActivity.class);
+            successfulLogin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(successfulLogin);
 
         }
@@ -58,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             //For now just send them on through!
 
             Intent successfulLogin = new Intent(this, RestaurantMainActivity.class);
+            successfulLogin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(successfulLogin);
         }
 
