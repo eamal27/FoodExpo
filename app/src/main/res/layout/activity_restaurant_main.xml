@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_restaurant_main"
     android:layout_width="match_parent"
@@ -9,5 +10,124 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.eamal27.foodexpo.RestaurantMainActivity">
+
+    <TextView
+        android:id="@+id/menuItemsLabel"
+        android:text="@string/menuItems"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/displayMenuItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editItemButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/menuItemsLabel" />
+
+    <Button
+        android:text="@string/editItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@id/editItemButton" />
+
+    <Button
+        android:text="@string/addItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addNewItemButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <View
+        android:id="@+id/centerShim"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/menuItemsLabel"
+        android:layout_toLeftOf="@id/centerShim"
+        android:layout_toStartOf="@id/centerShim"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/changeLogo"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@android:drawable/ic_menu_gallery"
+            android:id="@+id/imageView2"
+             />
+        <Button
+            android:id="@id/changeLogo"
+            android:text="@string/changeRestaurantImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="15dp"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/centerShim"
+        android:layout_toEndOf="@+id/centerShim"
+        android:layout_above="@+id/menuItemsLabel">
+
+        <TextView
+            android:id="@+id/restaurantName"
+            android:text="@string/lbl_restaurant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/restaurantPhone"
+            android:text="@string/lbl_phone"
+            android:layout_below="@id/restaurantName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/restaurantEmail"
+            android:layout_below="@id/restaurantPhone"
+            android:text="@string/lbl_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/restaurantAddress"
+            android:layout_below="@id/restaurantEmail"
+            android:text="@string/label_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/restaurantCityProvCountry"
+            android:layout_below="@id/restaurantAddress"
+            android:text="@string/lbl_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/restaurantPostal"
+            android:layout_below="@id/restaurantCityProvCountry"
+            android:text="@string/lbl_postal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -35,4 +35,8 @@
     <string name="mapLocation">Use Google Maps</string>
     <string name="or">OR</string>
     <string name="hello_world">Hello World</string>
+    <string name="editItem">Edit Menu Item</string>
+    <string name="addItem">Add Menu Item</string>
+    <string name="menuItems">Menu Items</string>
+    <string name="changeRestaurantImage">Change Image</string>
 </resources>
