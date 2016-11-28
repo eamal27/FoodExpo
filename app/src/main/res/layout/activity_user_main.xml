@@ -5,11 +5,8 @@
     android:id="@+id/activity_user_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.eamal27.foodexpo.UserMainActivity">
+
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
@@ -17,9 +14,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:rotation_degrees="15.5"
-        tools:context=".MyActivity" />
+        tools:context=".UserMainActivity" />
 
-    <include layout="@layout/buttons" />
+    <TextView
+        android:id="@+id/txtNumberOfRestaurants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Results from 7 restaurants"
+        android:textColor="#000"
+        android:textSize="7pt"
+        android:paddingTop="30dp"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="30dp">
+
+        <Button
+            android:id="@+id/left"
+            android:layout_margin="20dp"
+            android:text="@string/no_button"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/right"
+            android:layout_margin="20dp"
+            android:text="@string/yes_button"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

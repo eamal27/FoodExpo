@@ -39,4 +39,10 @@
     <string name="addItem">Add Menu Item</string>
     <string name="menuItems">Menu Items</string>
     <string name="changeRestaurantImage">Change Image</string>
+    <string name="no_button">No thanks</string>
+    <string name="yes_button">Yes please!</string>
+    <string name="preferences">Preferences</string>
+    <string name="food_item_name">Food Item Name</string>
+    <string name="description_of_food_item">description of food item</string>
+    <string name="restaurant_name">Restaurant Name</string>
 </resources>

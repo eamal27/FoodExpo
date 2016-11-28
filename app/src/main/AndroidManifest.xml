@@ -35,7 +35,11 @@
             android:value="AIzaSyACF3pNIZYgN7gZv6jxWRkjzmBM3exj0rc" />
 
         <activity android:name=".GetAddress" />
-        <activity android:name=".GetAddressMap"></activity>
+        <activity android:name=".GetAddressMap" />
+        <activity
+            android:name=".PreferencesActivity"
+            android:label="Preferences"></activity>
+        <activity android:name=".FoodItemActivity"></activity>
     </application>
 
 </manifest>

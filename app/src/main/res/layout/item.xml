@@ -2,18 +2,34 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
+    android:background="#FFF"
     android:layout_width="250dp"
-    android:layout_height="170dp">
+    android:layout_height="250dp">
+
+    <ImageView
+        android:id="@+id/foodItemImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_launcher"/>
 
     <TextView
         android:id="@+id/helloText"
-        android:textSize="40sp"
+        android:textSize="20sp"
         android:textColor="@android:color/white"
-        android:background="#E339"
-        android:gravity="center"
-        tools:text="@string/hello_world"
+        android:gravity="bottom|center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/foodItemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$12"
+        android:background="#82000000"
+        android:textColor="#FFF"
+        android:textSize="30sp"
+        android:layout_margin="10dp"
+        android:layout_gravity="right|bottom"/>
 
     <View
         android:id="@+id/item_swipe_left_indicator"
@@ -21,7 +37,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="10dp"
-        android:background="#A5F" />
+        android:background="#c824b70a" />
 
     <View
         android:id="@+id/item_swipe_right_indicator"
@@ -30,6 +46,6 @@
         android:layout_height="20dp"
         android:layout_margin="10dp"
         android:layout_gravity="right"
-        android:background="#5AF" />
+        android:background="#c8c22a34" />
 
 </FrameLayout>

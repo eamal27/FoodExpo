@@ -9,6 +9,9 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -40,16 +43,13 @@ public class UserMainActivity extends AppCompatActivity {
 
 
         al = new ArrayList<>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
-        al.add("html");
-        al.add("c++");
-        al.add("css");
-        al.add("javascript");
+        al.add("12");
+        al.add("6.99");
+        al.add("14.99");
+        al.add("18.99");
+        al.add("7");
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.foodItemPrice, al );
 
 
         flingContainer.setAdapter(arrayAdapter);
@@ -78,10 +78,10 @@ public class UserMainActivity extends AppCompatActivity {
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 // Ask for more data here
-                al.add("XML ".concat(String.valueOf(i)));
+//                al.add("XML ".concat(String.valueOf(i)));
                 arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
-                i++;
+//                i++;
             }
 
             @Override
@@ -97,7 +97,9 @@ public class UserMainActivity extends AppCompatActivity {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                makeToast(UserMainActivity.this, "Clicked!");
+//                makeToast(UserMainActivity.this, "Clicked!");
+                Intent intent = new Intent(UserMainActivity.this, FoodItemActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -120,6 +122,30 @@ public class UserMainActivity extends AppCompatActivity {
     public void left() {
         flingContainer.getTopCardListener().selectLeft();
     }
+
+
+    // Menu setup
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_item_preferences:
+                Intent intent = new Intent(this, PreferencesActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 
     private Location getLocation(){
