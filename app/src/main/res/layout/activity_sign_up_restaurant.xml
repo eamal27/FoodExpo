@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lbl_restaurant_name"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/edittext_restaurantName"
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/lbl_business_id"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="10dp"/>
 
     <EditText
         android:id="@+id/edittext_businessId"
@@ -43,26 +43,61 @@
         android:inputType="text"
         android:minWidth="200dp"/>
 
+
     <TextView
-        android:id="@+id/lbl_address"
+        android:id="@+id/lbl_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_address"
-        android:layout_marginTop="30dp"/>
+        android:text="@string/lbl_email"
+        android:layout_marginTop="10dp"/>
 
     <EditText
-        android:id="@+id/edittext_address"
+        android:id="@+id/edittext_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
+        android:minWidth="250dp"/>
+
+    <TextView
+        android:id="@+id/lbl_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_phone"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/edittext_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:minWidth="250dp"/>
+    <TextView
+        android:id="@+id/lbl_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_password"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/edittext_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:minWidth="250dp"/>
+    <EditText
+        android:id="@+id/edittext_password_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:minWidth="250dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_sign_up_submit"
+        android:text="@string/restaurantLocation"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:onClick="submitRestaurantRegistration"/>
+        android:layout_marginTop="10dp"
+        android:onClick="getLocation"
+        android:id="@+id/button2" />
 
 </LinearLayout>

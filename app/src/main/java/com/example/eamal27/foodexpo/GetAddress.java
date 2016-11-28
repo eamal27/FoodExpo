@@ -10,7 +10,10 @@ import android.widget.Toast;
 
 public class GetAddress extends AppCompatActivity {
 
+    public static final int getTextAddress = 1111;
+    public static final int returnTextAddress = 1112;
     public static final int getAddressMap = 3333;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +85,7 @@ public class GetAddress extends AppCompatActivity {
             resultIntent.putExtra("prov",prov);
             resultIntent.putExtra("country",country);
             resultIntent.putExtra("postal",postal);
-            setResult(SignUpUserActivity.returnTextAddress, resultIntent);
+            setResult(returnTextAddress, resultIntent);
             finish();
         }
     }

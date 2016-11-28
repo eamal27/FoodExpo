@@ -30,6 +30,7 @@
     <string name="logo">Logo</string>
     <string name="user_acct_setup">User Account Setup</string>
     <string name="typeLocation">Enter Your Delivery Location</string>
+    <string name="restaurantLocation">Enter your Location</string>
     <string name="setLocation">Set As Delivery Location</string>
     <string name="mapLocation">Use Google Maps</string>
     <string name="or">OR</string>

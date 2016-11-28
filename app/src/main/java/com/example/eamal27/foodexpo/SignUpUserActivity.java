@@ -13,12 +13,6 @@ import java.util.Locale;
 
 public class SignUpUserActivity extends AppCompatActivity {
 
-    public static final int getTextAddress = 1111;
-    public static final int returnTextAddress = 1112;
-    public static final int cancelTextAddress = 1113;
-    public static final int getMapAddresss = 2222;
-    public static final int returnMapAddress = 2223;
-    public static final int cancelMapAddress = 2224;
 
     private Address address;
 
@@ -34,14 +28,14 @@ public class SignUpUserActivity extends AppCompatActivity {
     public void getLocation(View view){
         if (checkPage()) {
             Intent getAddress = new Intent(this, GetAddress.class);
-            startActivityForResult(getAddress, getTextAddress);
+            startActivityForResult(getAddress, GetAddress.getTextAddress);
         }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent result){
         super.onActivityResult(requestCode,resultCode,result);
-        if (requestCode==getTextAddress){
-            if (resultCode==returnTextAddress){
+        if (requestCode==GetAddress.getTextAddress){
+            if (resultCode==GetAddress.returnTextAddress){
                 String addressOne = result.getStringExtra("addressOne");
                 String addressTwo = result.getStringExtra("addressTwo");
                 String city = result.getStringExtra("city");
@@ -101,7 +95,7 @@ public class SignUpUserActivity extends AppCompatActivity {
             showError=true;
             toFocus = phoneET;
         } else if (password.equals("")){
-            errorMessage = "Please enter a passowrd";
+            errorMessage = "Please enter a password";
             showError=true;
             toFocus = passwordET;
         } else if (!password.equals(passwordConfirm)){
@@ -135,6 +129,8 @@ public class SignUpUserActivity extends AppCompatActivity {
     }
 
     private boolean createNewUser(){
+
+        //TODO: create a new user in the database
         return true;
     }
 }
