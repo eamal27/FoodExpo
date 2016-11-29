@@ -11,11 +11,11 @@ class User {
     private Address address;
 
     User(){
-        firstName="";
-        lastName="";
-        email="";
-        phone="";
-        address=null;
+        this.firstName="";
+        this.lastName="";
+        this.email="";
+        this.phone="";
+        this.address=null;
     }
 
     User(String firstName, String lastName, String email, String phone, Address address){

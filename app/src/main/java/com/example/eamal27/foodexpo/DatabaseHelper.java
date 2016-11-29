@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Address;
-import android.support.v7.view.ContextThemeWrapper;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -101,7 +100,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-
+        //  If we run into errors fill this in
+        // Drop old data (or move it over)
+        // Recreate DB
     }
 
     private void enableForeignKeys(SQLiteDatabase database){
@@ -111,7 +112,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
     // Takes a user and a password and creates a new user
     // Password is needed since it's not saved in the user class (it's already unsecure enough >_>)
     // Returns the user id if successful, or -1 if not
-
     long addUser(User user, String password){
         long locationVal = checkLocation(user.getAddress());
         if (locationVal==-1){
@@ -128,6 +128,27 @@ class DatabaseHelper extends SQLiteOpenHelper {
         values.put(phoneCol, user.getPhone());
         values.put(locationCol, locationVal);
         return db.insert(usersTable, null, values);
+    }
+
+    // Takes a restaurant and a password and creates a new restaurant
+    // Password is needed since it's not saved in the restaurant class
+    // Returns the restaurant id if successful, or -1 if not
+    long addRestaurant(Restaurant restaurant, String password){
+        long locationVal = checkLocation(restaurant.getAddress());
+        if (locationVal==-1){
+            locationVal = addLocation(restaurant.getAddress());
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        enableForeignKeys(db);
+        ContentValues values = new ContentValues();
+        values.put(nameCol, restaurant.getName());
+        values.put(businessIdCol, restaurant.getBusinessId());
+        values.put(emailCol, restaurant.getEmail());
+        values.put(passwordCol, password);
+        values.put(phoneCol, restaurant.getPhone());
+        values.put(locationCol, locationVal);
+        return db.insert(restaurantTable, null, values);
     }
 
     // Insert a new location into the database and return the ID

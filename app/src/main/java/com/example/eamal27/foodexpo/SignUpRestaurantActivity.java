@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -48,7 +49,20 @@ public class SignUpRestaurantActivity extends AppCompatActivity {
                 address.setCountryName(country);
                 address.setPostalCode(postal);
 
-                loginNewRestaurant();
+                EditText restaurantNameET = (EditText)findViewById(R.id.edittext_restaurantName);
+                EditText businessIdET = (EditText)findViewById(R.id.edittext_businessId);
+                EditText emailET = (EditText)findViewById(R.id.edittext_email);
+                EditText phoneET = (EditText)findViewById(R.id.edittext_phone);
+                EditText passwordET = (EditText)findViewById(R.id.edittext_password);
+
+                String restaurantName = restaurantNameET.getText().toString();
+                String businessId = businessIdET.getText().toString();
+                String email = emailET.getText().toString();
+                String phone = phoneET.getText().toString();
+                String password = passwordET.getText().toString();
+
+                Restaurant newRestaurant = new Restaurant(restaurantName,businessId,email,phone,address);
+                createNewRestaurant(newRestaurant, password);
             }
         }
     }
@@ -112,23 +126,23 @@ public class SignUpRestaurantActivity extends AppCompatActivity {
             return true;
         }
     }
-    private void loginNewRestaurant(){
 
-        if (createNewRestaurant()) {
-            // Launch the user main intent with the new email address
-            Intent loadUserMain = new Intent(this, RestaurantMainActivity.class);
-            EditText getEmail = (EditText) findViewById(R.id.edittext_email);
-            String email = getEmail.getText().toString();
-            loadUserMain.putExtra("email", email);
-            loadUserMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(loadUserMain);
+    private void createNewRestaurant(Restaurant restaurant, String password){
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        if (dbHelper.addRestaurant(restaurant, password)!=-1){
+            loginNewRestaurant(restaurant.getEmail(), password);
+        }else{
+            Log.i("Error", "Something went wrong during user creation");
         }
     }
 
-    private boolean createNewRestaurant(){
-        //TODO: create a new restaurant in the database
-
-        return true;
+    private void loginNewRestaurant(String email, String password){
+        // Launch the restaurant main intent with the new email address
+        Intent loadRestaurantMain = new Intent(this, RestaurantMainActivity.class);
+        loadRestaurantMain.putExtra("email", email);
+        loadRestaurantMain.putExtra("password",password);
+        loadRestaurantMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loadRestaurantMain);
     }
 
 }

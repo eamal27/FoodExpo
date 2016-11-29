@@ -14,7 +14,6 @@ import java.util.Locale;
 
 public class SignUpUserActivity extends AppCompatActivity {
 
-    private User user;
     private Address address;
 
     @Override
@@ -23,8 +22,6 @@ public class SignUpUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_user);
         Locale locale = getResources().getConfiguration().locale;
         address = new Address(locale);
-        user = new User();
-
     }
 
 
@@ -149,9 +146,5 @@ public class SignUpUserActivity extends AppCompatActivity {
         loadUserMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loadUserMain);
     }
-
-
-
-
 
 }
