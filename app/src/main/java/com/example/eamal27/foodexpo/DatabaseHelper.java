@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Address;
+import android.util.Log;
 
 import java.util.Locale;
 
@@ -313,6 +314,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.query(locationTable, columns, whereClause, whereArgs, null, null, null);
         data.moveToFirst();
 
+        Log.i("addressOne",data.getString(0));
+        Log.i("addressTwo",data.getString(1));
+        Log.i("city",data.getString(2));
+        Log.i("prov",data.getString(3));
+        Log.i("country",data.getString(4));
+        Log.i("postal",data.getString(5));
+
         Address address = new Address(locale);
         if (data.getCount()!=0) {
             String addressOne = data.getString(0);
@@ -321,6 +329,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String prov = data.getString(3);
             String country = data.getString(4);
             String postal = data.getString(5);
+
+            address.setAddressLine(0,addressOne);
+            address.setAddressLine(1,addressTwo);
+            address.setLocality(city);
+            address.setAdminArea(prov);
+            address.setCountryName(country);
+            address.setPostalCode(postal);
         }
         data.close();
         db.close();
