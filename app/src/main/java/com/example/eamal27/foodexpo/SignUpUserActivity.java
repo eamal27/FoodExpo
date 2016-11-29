@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,7 +14,7 @@ import java.util.Locale;
 
 public class SignUpUserActivity extends AppCompatActivity {
 
-
+    private User user;
     private Address address;
 
     @Override
@@ -22,6 +23,8 @@ public class SignUpUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_user);
         Locale locale = getResources().getConfiguration().locale;
         address = new Address(locale);
+        user = new User();
+
     }
 
 
@@ -50,7 +53,20 @@ public class SignUpUserActivity extends AppCompatActivity {
                 address.setCountryName(country);
                 address.setPostalCode(postal);
 
-                loginNewUser();
+                EditText firstNameET = (EditText)findViewById(R.id.edittext_firstName);
+                EditText lastNameET = (EditText)findViewById(R.id.edittext_lastName);
+                EditText emailET = (EditText)findViewById(R.id.edittext_email);
+                EditText phoneET = (EditText)findViewById(R.id.edittext_phone);
+                EditText passwordET = (EditText)findViewById(R.id.edittext_password);
+
+                String firstName = firstNameET.getText().toString();
+                String lastName = lastNameET.getText().toString();
+                String email = emailET.getText().toString();
+                String phone = phoneET.getText().toString();
+                String password = passwordET.getText().toString();
+
+                User newUser = new User(firstName,lastName,email,phone,address);
+                createNewUser(newUser, password);
             }
         }
     }
@@ -115,22 +131,27 @@ public class SignUpUserActivity extends AppCompatActivity {
         }
     }
 
-    private void loginNewUser(){
 
-        if (createNewUser()) {
-            // Launch the user main intent with the new email address
-            Intent loadUserMain = new Intent(this, UserMainActivity.class);
-            EditText getEmail = (EditText) findViewById(R.id.edittext_email);
-            String email = getEmail.getText().toString();
-            loadUserMain.putExtra("email", email);
-            loadUserMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(loadUserMain);
+    private void createNewUser(User user, String password){
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        if (dbHelper.addUser(user, password)!=-1){
+            loginNewUser(user.getEmail(), password);
+        }else{
+            Log.i("Error", "Something went wrong during user creation");
         }
     }
 
-    private boolean createNewUser(){
-
-        //TODO: create a new user in the database
-        return true;
+    private void loginNewUser(String email, String password){
+        // Launch the user main intent with the new email address
+        Intent loadUserMain = new Intent(this, UserMainActivity.class);
+        loadUserMain.putExtra("email", email);
+        loadUserMain.putExtra("password",password);
+        loadUserMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loadUserMain);
     }
+
+
+
+
+
 }

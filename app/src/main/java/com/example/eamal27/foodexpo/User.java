@@ -2,18 +2,31 @@ package com.example.eamal27.foodexpo;
 
 import android.location.Address;
 
-/**
- * Created by 100484424 on 11/21/2016.
- */
-
-public class User {
+class User {
 
     private String firstName;
     private String lastName;
     private String email;
+    private String phone;
     private Address address;
 
-    public String getLastName() {
+    User(){
+        firstName="";
+        lastName="";
+        email="";
+        phone="";
+        address=null;
+    }
+
+    User(String firstName, String lastName, String email, String phone, Address address){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+    }
+
+    String getLastName() {
         return lastName;
     }
 
@@ -21,7 +34,7 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getFirstName() {
+    String getFirstName() {
         return firstName;
     }
 
@@ -29,7 +42,7 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
@@ -37,11 +50,19 @@ public class User {
         this.email = email;
     }
 
-    public Address getAddress() {
+    Address getAddress() {
         return address;
     }
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

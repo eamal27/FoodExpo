@@ -45,4 +45,6 @@
     <string name="food_item_name">Food Item Name</string>
     <string name="description_of_food_item">description of food item</string>
     <string name="restaurant_name">Restaurant Name</string>
+    <string name="incorrectPassword">Incorrect Password!</string>
+    <string name="emailNotFound">E-mail address not found!</string>
 </resources>

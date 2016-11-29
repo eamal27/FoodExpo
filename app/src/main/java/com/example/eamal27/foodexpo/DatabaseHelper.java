@@ -1,14 +1,14 @@
 package com.example.eamal27.foodexpo;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Address;
+import android.support.v7.view.ContextThemeWrapper;
 
-/**
- * Created by 100484424 on 11/28/2016.
- */
-
-public class DatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FoodExpoDB";
     private static final int DATABASE_VERSION = 1;
@@ -48,29 +48,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                                         cityCol + " TEXT NOT NULL, " +
                                                         provCol + " TEXT, " +
                                                         countryCol + " TEXT NOT NULL, " +
-                                                        postalCol + " TEXT NOT NULL)";
+                                                        postalCol + " TEXT NOT NULL);";
 
     private static final String usersTableCreate = "create table " + usersTable + "(" +
                                                         idCol + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                         firstNameCol + " TEXT NOT NULL, " +
                                                         lastNameCol + " TEXT NOT NULL, " +
                                                         emailCol + " TEXT NOT NULL, " +
-                                                        passwordCol + " TEXT NOT NULL " +
+                                                        passwordCol + " TEXT NOT NULL, " +
                                                         phoneCol + " TEXT NOT NULL, " +
                                                         locationCol + " INTEGER NOT NULL, " +
                                                         "FOREIGN KEY (" + locationCol + ") REFERENCES " +
-                                                                        locationTable + "(" + idCol + ")";
+                                                                        locationTable + "(" + idCol + "));";
 
     private static final String restaurantTableCreate = "create table " + restaurantTable + "(" +
                                                         idCol + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                         nameCol + " TEXT NOT NULL, " +
                                                         businessIdCol + " TEXT NOT NULL, " +
                                                         emailCol + " TEXT NOT NULL, " +
-                                                        passwordCol + " TEXT NOT NULL " +
+                                                        passwordCol + " TEXT NOT NULL, " +
                                                         phoneCol + " TEXT NOT NULL, " +
                                                         locationCol + " INTEGER NOT NULL, " +
                                                         "FOREIGN KEY (" + locationCol + ") REFERENCES " +
-                                                                        locationTable + "(" + idCol + ")";
+                                                                        locationTable + "(" + idCol + "));";
 
     private static final String foodItemsTableCreate = "create table " + foodItemsTable + "(" +
                                                         idCol + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -78,11 +78,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                                         priceCol + " TEXT NOT NULL, " +
                                                         restaurantCol + " INTEGER NOT NULL, " +
                                                         "FOREIGN KEY (" + restaurantCol + ") REFERENCES " +
-                                                                        restaurantTable + "(" + idCol + ")";
+                                                                        restaurantTable + "(" + idCol + "));";
 
     private static final String enableForeignKeys = "PRAGMA foreign_keys=ON";
 
-    public DatabaseHelper(Context context){
+    DatabaseHelper(Context context){
         super (context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -100,9 +100,145 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){}
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+
+    }
 
     private void enableForeignKeys(SQLiteDatabase database){
         database.execSQL(enableForeignKeys);
+    }
+
+    // Takes a user and a password and creates a new user
+    // Password is needed since it's not saved in the user class (it's already unsecure enough >_>)
+    // Returns the user id if successful, or -1 if not
+
+    long addUser(User user, String password){
+        long locationVal = checkLocation(user.getAddress());
+        if (locationVal==-1){
+            locationVal = addLocation(user.getAddress());
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        enableForeignKeys(db);
+        ContentValues values = new ContentValues();
+        values.put(firstNameCol, user.getFirstName());
+        values.put(lastNameCol, user.getLastName());
+        values.put(emailCol, user.getEmail());
+        values.put(passwordCol, password);
+        values.put(phoneCol, user.getPhone());
+        values.put(locationCol, locationVal);
+        return db.insert(usersTable, null, values);
+    }
+
+    // Insert a new location into the database and return the ID
+    // Returns -1 if insert failed
+    long addLocation(Address address){
+        SQLiteDatabase db = this.getWritableDatabase();
+        enableForeignKeys(db);
+        ContentValues values = new ContentValues();
+        values.put(addressOneCol, address.getAddressLine(0));
+        values.put(addressTwoCol, address.getAddressLine(1));
+        values.put(cityCol, address.getLocality());
+        values.put(provCol, address.getAdminArea());
+        values.put(countryCol, address.getCountryName());
+        values.put(postalCol, address.getPostalCode());
+        return db.insert(locationTable,null,values);
+    }
+
+    // This function returns the id value of the address in the database, or -1 if it doesn't exist yet
+    long checkLocation(Address address){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {idCol};
+        String whereClause = addressOneCol + " = ? AND " +
+                             addressTwoCol + " = ? AND " +
+                             cityCol + " = ? AND " +
+                             provCol + " = ? AND " +
+                             countryCol + " = ? AND " +
+                             postalCol + " = ?" ;
+
+        String[] whereArgs = {address.getAddressLine(0),
+                               address.getAddressLine(1),
+                               address.getLocality(),
+                               address.getAdminArea(),
+                               address.getCountryName(),
+                               address.getPostalCode()};
+
+        Cursor data = db.query(locationTable, columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+        long returnVal = -1;
+        if (data.getCount()!=0) {
+            returnVal = data.getInt(0);
+        }
+        data.close();
+        return returnVal;
+    }
+
+    // Checks if an email is registered already in the User table
+    // Returns the id if found, -1 otherwise
+    long checkUsername(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {idCol};
+        String whereClause = emailCol + " = ? ";
+        String[] whereArgs = {email};
+        Cursor data = db.query(usersTable, columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+        long returnVal = -1;
+        if (data.getCount()!=0){
+            returnVal = data.getInt(0);
+        }
+        data.close();
+        return returnVal;
+    }
+
+    // Checks if an email is registered already in the Restaurant table
+    // Returns the id if found, -1 otherwise
+    long checkRestaurantUsername(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {idCol};
+        String whereClause = emailCol + " = ? ";
+        String[] whereArgs = {email};
+        Cursor data = db.query(restaurantTable, columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+        long returnVal = -1;
+        if (data.getCount()!=0){
+            returnVal = data.getInt(0);
+        }
+        data.close();
+        return returnVal;
+    }
+
+    long checkUserPassword(String email, String password){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {idCol};
+        String whereClause = emailCol + " = ? AND " + passwordCol + " = ? " ;
+        String[] whereArgs = {email, password};
+        Cursor data = db.query(usersTable,columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+        long returnVal = -1;
+        if (data.getCount()!=0){
+            returnVal = data.getInt(0);
+        }
+        data.close();
+        return returnVal;
+    }
+
+    long checkRestaurantPassword(String email, String password){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {idCol};
+        String whereClause = emailCol + " = ? AND " + passwordCol + " = ? " ;
+        String[] whereArgs = {email, password};
+        Cursor data = db.query(restaurantTable,columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+        long returnVal = -1;
+        if (data.getCount()!=0){
+            returnVal = data.getInt(0);
+        }
+        data.close();
+        return returnVal;
     }
 }
