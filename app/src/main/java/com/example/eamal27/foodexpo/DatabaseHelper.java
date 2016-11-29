@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Address;
 
+import java.util.Locale;
+
 class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FoodExpoDB";
@@ -81,8 +83,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String enableForeignKeys = "PRAGMA foreign_keys=ON";
 
+    private Locale locale;
+
     DatabaseHelper(Context context){
         super (context, DATABASE_NAME, null, DATABASE_VERSION);
+        locale = context.getResources().getConfiguration().locale;
     }
 
     @Override
@@ -127,7 +132,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
         values.put(passwordCol, password);
         values.put(phoneCol, user.getPhone());
         values.put(locationCol, locationVal);
-        return db.insert(usersTable, null, values);
+        long returnVal = db.insert(usersTable, null, values);
+        db.close();
+        return returnVal;
     }
 
     // Takes a restaurant and a password and creates a new restaurant
@@ -148,7 +155,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
         values.put(passwordCol, password);
         values.put(phoneCol, restaurant.getPhone());
         values.put(locationCol, locationVal);
-        return db.insert(restaurantTable, null, values);
+        long returnVal = db.insert(restaurantTable, null, values);
+        db.close();
+        return returnVal;
     }
 
     // Insert a new location into the database and return the ID
@@ -163,7 +172,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
         values.put(provCol, address.getAdminArea());
         values.put(countryCol, address.getCountryName());
         values.put(postalCol, address.getPostalCode());
-        return db.insert(locationTable,null,values);
+        long returnVal = db.insert(locationTable,null,values);
+        db.close();
+        return returnVal;
     }
 
     // This function returns the id value of the address in the database, or -1 if it doesn't exist yet
@@ -192,6 +203,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             returnVal = data.getInt(0);
         }
         data.close();
+        db.close();
         return returnVal;
     }
 
@@ -210,6 +222,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             returnVal = data.getInt(0);
         }
         data.close();
+        db.close();
         return returnVal;
     }
 
@@ -228,6 +241,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             returnVal = data.getInt(0);
         }
         data.close();
+        db.close();
         return returnVal;
     }
 
@@ -244,6 +258,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             returnVal = data.getInt(0);
         }
         data.close();
+        db.close();
         return returnVal;
     }
 
@@ -260,6 +275,55 @@ class DatabaseHelper extends SQLiteOpenHelper {
             returnVal = data.getInt(0);
         }
         data.close();
+        db.close();
         return returnVal;
+    }
+
+    Restaurant getRestaurantInfo(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {nameCol, businessIdCol, phoneCol, locationCol};
+        String whereClause = emailCol + " = ? ";
+        String[]whereArgs = {email};
+        Cursor data = db.query(restaurantTable, columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+        Restaurant restaurant;
+        if (data.getCount()!=0){
+            String name = data.getString(0);
+            String businessId = data.getString(1);
+            String phone = data.getString(2);
+            Long addressId = data.getLong(3);
+            Address address = getAddress(addressId);
+            restaurant = new Restaurant(name, businessId, email, phone, address);
+        } else {
+            restaurant = new Restaurant();
+        }
+        data.close();
+        db.close();
+        return restaurant;
+    }
+
+    // Returns an address object given it's id value
+    Address getAddress(long id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {addressOneCol, addressTwoCol, cityCol, provCol, countryCol, postalCol};
+        String whereClause = idCol + " = ? ";
+        String[] whereArgs = {Long.toString(id)};
+        Cursor data = db.query(locationTable, columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+
+        Address address = new Address(locale);
+        if (data.getCount()!=0) {
+            String addressOne = data.getString(0);
+            String addressTwo = data.getString(1);
+            String city = data.getString(2);
+            String prov = data.getString(3);
+            String country = data.getString(4);
+            String postal = data.getString(5);
+        }
+        data.close();
+        db.close();
+        return address;
     }
 }

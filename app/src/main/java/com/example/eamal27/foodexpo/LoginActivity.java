@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             if (verifyRestaurantUsername(email)){
                 if(verifyRestaurantPassword(email, password)) {
                     Intent successfulLogin = new Intent(this, RestaurantMainActivity.class);
+                    successfulLogin.putExtra("email",email);
                     successfulLogin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(successfulLogin);
                 } else {
