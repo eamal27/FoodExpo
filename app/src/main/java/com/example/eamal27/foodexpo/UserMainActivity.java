@@ -1,19 +1,23 @@
 package com.example.eamal27.foodexpo;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -31,6 +35,7 @@ public class UserMainActivity extends AppCompatActivity {
     private ArrayList<String> al;
     private ArrayAdapter<String> arrayAdapter;
     private int i;
+    Button leftButton, rightButton;
 
     @InjectView(R.id.frame) SwipeFlingAdapterView flingContainer;
 
@@ -41,13 +46,15 @@ public class UserMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_main);
         ButterKnife.inject(this);
 
+        leftButton = (Button) findViewById(R.id.left);
+        rightButton = (Button) findViewById(R.id.right);
 
         al = new ArrayList<>();
-        al.add("12");
+        al.add("12.00");
         al.add("6.99");
         al.add("14.99");
         al.add("18.99");
-        al.add("7");
+        al.add("7.00");
 
         arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.foodItemPrice, al );
 
@@ -67,21 +74,55 @@ public class UserMainActivity extends AppCompatActivity {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                makeToast(UserMainActivity.this, "Left!");
+//                makeToast(UserMainActivity.this, "Left!");
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                makeToast(UserMainActivity.this, "Right!");
+//                new AlertDialog.Builder(UserMainActivity.this)
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                        .setTitle("Confirm Order")
+//                        .setMessage("Are you sure you want to order this food item?")
+//                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                makeToast(UserMainActivity.this, "Food Item Ordered");
+//                            }
+//
+//                        })
+//                        .setNegativeButton("Cancel", null)
+//                        .show();
+                AlertDialog.Builder confirmDialog = new AlertDialog.Builder(
+                        UserMainActivity.this);
+                LayoutInflater factory = LayoutInflater.from(UserMainActivity.this);
+                final View view = factory.inflate(R.layout.order_confirmation, null);
+                confirmDialog.setView(view);
+                confirmDialog.setPositiveButton("Place Order!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        makeToast(UserMainActivity.this, "Food Item Ordered");
+                    }
+                });
+                confirmDialog.setNegativeButton("Cancel", null);
+
+                confirmDialog.show();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 // Ask for more data here
-//                al.add("XML ".concat(String.valueOf(i)));
                 arrayAdapter.notifyDataSetChanged();
-                Log.d("LIST", "notified");
-//                i++;
+                Log.d("LIST", itemsInAdapter+" items");
+
+                // disable/enable buttons
+                if (itemsInAdapter == 0) {
+                    leftButton.setEnabled(false);
+                    rightButton.setEnabled(false);
+                } else {
+                    if(!leftButton.isEnabled()) leftButton.setEnabled(true);
+                    if(!rightButton.isEnabled()) rightButton.setEnabled(true);
+                }
             }
 
             @Override
@@ -141,11 +182,12 @@ public class UserMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, PreferencesActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.menu_item_logout:
+                // logout and go back to LoginActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 
     private Location getLocation(){

@@ -47,4 +47,6 @@
     <string name="restaurant_name">Restaurant Name</string>
     <string name="incorrectPassword">Incorrect Password!</string>
     <string name="emailNotFound">E-mail address not found!</string>
+    <string name="logout">Logout</string>
+    <string name="save_button">Save</string>
 </resources>
