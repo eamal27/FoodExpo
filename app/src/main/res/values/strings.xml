@@ -38,15 +38,22 @@
     <string name="editItem">Edit Menu Item</string>
     <string name="addItem">Add Menu Item</string>
     <string name="menuItems">Menu Items</string>
-    <string name="changeRestaurantImage">Change Image</string>
+    <string name="changeImage">Change Image</string>
     <string name="no_button">No thanks</string>
     <string name="yes_button">Yes please!</string>
     <string name="preferences">Preferences</string>
     <string name="food_item_name">Food Item Name</string>
     <string name="description_of_food_item">description of food item</string>
+    <string name="description">Description</string>
     <string name="restaurant_name">Restaurant Name</string>
     <string name="incorrectPassword">Incorrect Password!</string>
     <string name="emailNotFound">E-mail address not found!</string>
     <string name="logout">Logout</string>
     <string name="save_button">Save</string>
+    <string name="price">Price</string>
+    <string name="addItemSuccess">Item successfully added!</string>
+    <string name="addItemFailure">Item was not added.</string>
+    <string name="editItemSuccess">Item updated successfully!</string>
+    <string name="editItemFailure">Item was not updated.</string>
+
 </resources>

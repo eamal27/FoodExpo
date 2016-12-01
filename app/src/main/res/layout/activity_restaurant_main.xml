@@ -25,14 +25,24 @@
         android:layout_above="@+id/editItemButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/menuItemsLabel" />
+        android:layout_below="@id/menuItemsLabel">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/menuLayout">
+        </LinearLayout>
+
+    </ScrollView>
 
     <Button
         android:text="@string/editItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@id/editItemButton" />
+        android:id="@id/editItemButton"
+        android:onClick="editFoodItem"/>
 
     <Button
         android:text="@string/addItem"
@@ -41,7 +51,8 @@
         android:id="@+id/addNewItemButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="addFoodItem"/>
 
     <View
         android:id="@+id/centerShim"
@@ -72,7 +83,7 @@
              />
         <Button
             android:id="@id/changeLogo"
-            android:text="@string/changeRestaurantImage"
+            android:text="@string/changeImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

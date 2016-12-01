@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_food_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.eamal27.foodexpo.FoodItemActivity">
+
+   <ImageView
+        android:id="@+id/foodItemImage"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@mipmap/ic_launcher"
+        android:contentDescription="@string/food_item_name"/>
+
+    <Button
+        android:id="@+id/editImage"
+        android:text="@string/changeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/foodItemImage"
+        android:layout_toEndOf="@id/foodItemImage"
+        android:layout_marginTop="30dp"
+        android:onClick="editImage"/>
+
+    <TextView
+        android:id="@+id/itemNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_below="@id/foodItemImage"
+        android:textSize="12pt"
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:text="@string/food_item_name"/>
+
+    <TextView
+        android:id="@+id/priceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginRight="20dp"
+        android:gravity="right"
+        android:layout_alignTop="@id/itemNameLabel"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:textSize="12pt"
+        android:text="@string/price"/>
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:id="@+id/getItemPrice"
+        android:layout_marginRight="20dp"
+        android:layout_alignBaseline="@+id/getItemName"
+        android:layout_alignBottom="@id/getItemName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@id/foodItemImage"
+        android:layout_toEndOf="@id/foodItemImage" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_marginTop="9dp"
+        android:layout_marginLeft="20dp"
+        android:id="@id/getItemName"
+        android:layout_below="@id/itemNameLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <TextView
+        android:id="@+id/descriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_below="@id/getItemName"
+        android:textSize="12pt"
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:text="@string/description"/>
+
+    <EditText
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:gravity="top|start"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="9dp"
+        android:id="@+id/getDescription"
+        android:layout_below="@id/descriptionLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/submitButton" />
+
+ <Button
+     android:text="@string/button_sign_up_submit"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignParentBottom="true"
+     android:layout_centerHorizontal="true"
+     android:id="@+id/submitButton"
+     android:onClick="submit"/>
+
+
+</RelativeLayout>

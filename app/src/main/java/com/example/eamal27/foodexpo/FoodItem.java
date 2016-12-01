@@ -1,13 +1,14 @@
 package com.example.eamal27.foodexpo;
 
-
 public class FoodItem {
     private String name;
     private Float price;
+    private String description;
 
-    public FoodItem(String name, Float price) {
+    public FoodItem(String name, Float price, String description) {
         this.name = name;
         this.price = price;
+        this.description = description;
     }
 
     public String getName() {
@@ -24,5 +25,13 @@ public class FoodItem {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

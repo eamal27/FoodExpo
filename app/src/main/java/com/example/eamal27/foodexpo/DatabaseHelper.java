@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Address;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 class DatabaseHelper extends SQLiteOpenHelper {
@@ -40,6 +41,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String businessIdCol = "businessId";
     private static final String restaurantCol = "restaurant";
     private static final String priceCol = "price";
+    private static final String descriptionCol = "description";
 
     // Table Creation Statements
 
@@ -78,6 +80,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                                                         idCol + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                         nameCol + " TEXT NOT NULL, " +
                                                         priceCol + " TEXT NOT NULL, " +
+                                                        descriptionCol + " TEXT NOT NULL, " +
                                                         restaurantCol + " INTEGER NOT NULL, " +
                                                         "FOREIGN KEY (" + restaurantCol + ") REFERENCES " +
                                                                         restaurantTable + "(" + idCol + "));";
@@ -106,9 +109,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        //  If we run into errors fill this in
+        // If we run into errors fill this in
         // Drop old data (or move it over)
         // Recreate DB
+
+
     }
 
     private void enableForeignKeys(SQLiteDatabase database){
@@ -314,13 +319,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.query(locationTable, columns, whereClause, whereArgs, null, null, null);
         data.moveToFirst();
 
-        Log.i("addressOne",data.getString(0));
-        Log.i("addressTwo",data.getString(1));
-        Log.i("city",data.getString(2));
-        Log.i("prov",data.getString(3));
-        Log.i("country",data.getString(4));
-        Log.i("postal",data.getString(5));
-
         Address address = new Address(locale);
         if (data.getCount()!=0) {
             String addressOne = data.getString(0);
@@ -341,4 +339,47 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return address;
     }
+
+	long addFoodItem(FoodItem item, String email){
+		long restaurantId = checkRestaurantUsername(email);
+		String itemName = item.getName();
+		Float itemPrice = item.getPrice();
+		String description = item.getDescription();
+
+		SQLiteDatabase db = getWritableDatabase();
+		enableForeignKeys(db);
+		ContentValues values = new ContentValues();
+		values.put(nameCol,itemName);
+		values.put(priceCol,itemPrice.toString());
+		values.put(descriptionCol,description);
+		values.put(restaurantCol, restaurantId);
+		long returnVal = db.insert(foodItemsTable, null, values);
+		db.close();
+		return returnVal;
+	}
+
+	public ArrayList<FoodItem> getMenu(String email){
+
+		ArrayList<FoodItem> menu = new ArrayList<FoodItem>();
+		long restaurantId = checkRestaurantUsername(email);
+		SQLiteDatabase db = getReadableDatabase();
+		if (restaurantId!=-1){
+			String[] columns = {nameCol, priceCol, descriptionCol};
+			String whereClause = restaurantCol + " = ? ";
+			String[] whereArgs = {Long.toString(restaurantId)};
+			Cursor data = db.query(foodItemsTable,columns,whereClause,whereArgs,null,null,null);
+			while (data.moveToNext()){
+				String name = data.getString(0);
+				Float price = Float.parseFloat(data.getString(1));
+				String description = data.getString(2);
+				FoodItem item = new FoodItem(name, price, description);
+				menu.add(item);
+			}
+			data.close();
+		}
+		db.close();
+		return menu;
+	}
+
+
 }

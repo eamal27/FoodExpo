@@ -1,5 +1,6 @@
 package com.example.eamal27.foodexpo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -10,14 +11,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class RestaurantMainActivity extends AppCompatActivity {
     final static int RESULT_LOAD_IMG = 1;
 
+    public final static int requestAddNewFoodItem = 8700;
+    public final static int requestEditFoodItem = 8800;
+    public final static int returnAddSuccess = 8701;
+	public final static int returnAddFailure = 8702;
+    public final static int returnEditSuccess = 8801;
+    public final static int returnEditFailure = 8802;
+
     private Restaurant loggedIn;
+	private ArrayList<FoodItem> menu;
     DatabaseHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +40,7 @@ public class RestaurantMainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         loggedIn = dbHelper.getRestaurantInfo(email);
         displayRestaurantInfo();
+		updateMenu();
     }
 
     private void displayRestaurantInfo(){
@@ -91,7 +105,7 @@ public class RestaurantMainActivity extends AppCompatActivity {
                         .decodeFile(imgDecodableString));
 
             } else {
-                Toast.makeText(this, "You haven't picked Image",
+                Toast.makeText(this, "You haven't picked an Image",
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
@@ -99,7 +113,74 @@ public class RestaurantMainActivity extends AppCompatActivity {
                     .show();
         }
 
+        if (requestCode == requestAddNewFoodItem){
+			String displayText;
+			if(resultCode == returnAddSuccess) {
+				displayText = getString(R.string.addItemSuccess);
+			}else{
+				displayText = getString(R.string.addItemFailure);
+			}
+			Context context = getApplicationContext();
+			int duration = Toast.LENGTH_SHORT;
+			updateMenu();
+			Toast.makeText(context, displayText, duration).show();
+        }
+
+        if (requestCode == requestEditFoodItem){
+            if (resultCode == returnEditSuccess){
+                // Edit the selected item
+            }
+
+        }
+
     }
+
+    public void editFoodItem(View view){
+
+    }
+
+    public void addFoodItem(View view){
+        Intent addFoodItem = new Intent(this, EditFoodItemActivity.class);
+        addFoodItem.putExtra("email", loggedIn.getEmail());
+        startActivityForResult(addFoodItem,requestAddNewFoodItem);
+    }
+
+	private void updateMenu(){
+		menu = dbHelper.getMenu(loggedIn.getEmail());
+		displayMenu();
+	}
+
+	private void displayMenu(){
+		LinearLayout menuLayout = (LinearLayout)findViewById(R.id.menuLayout);
+		menuLayout.removeAllViews();
+		for (int menuItem=0;menuItem<menu.size();menuItem++){
+			// TODO: get the image
+			// TODO:
+
+			// Get the values to display for each menu item
+			String name = menu.get(menuItem).getName();
+			String price = Float.toString(menu.get(menuItem).getPrice());
+			String description = menu.get(menuItem).getDescription();
+
+			// Create a new TextView and add the correct text to each
+			TextView displayName = new TextView(this);
+			TextView displayPrice = new TextView(this);
+			TextView displayDescription = new TextView(this);
+			displayName.setText(name);
+			displayPrice.setText(price);
+			displayDescription.setText(description);
+
+			// Add the TextViews to a new Linear Layout
+			LinearLayout displayItem = new LinearLayout(this);
+			displayItem.setOrientation(LinearLayout.HORIZONTAL);
+			displayItem.addView(displayName);
+			displayItem.addView(displayPrice);
+			displayItem.addView(displayDescription);
+
+			// Add the new linearlayout into the scrollview
+			menuLayout.addView(displayItem);
+		}
+	}
 }
 
 
