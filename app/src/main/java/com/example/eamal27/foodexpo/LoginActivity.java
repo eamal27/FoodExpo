@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             if (verifyUsername(email)){
                 if(verifyPassword(email, password)) {
                     Intent successfulLogin = new Intent(this, UserMainActivity.class);
+                    successfulLogin.putExtra("email",email);
                     successfulLogin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(successfulLogin);
                 } else {

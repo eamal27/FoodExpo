@@ -268,6 +268,30 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return returnVal;
     }
 
+    User getUserInfo(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {firstNameCol, lastNameCol, phoneCol, locationCol};
+        String whereClause = emailCol + " = ? ";
+        String[]whereArgs = {email};
+        Cursor data = db.query(usersTable, columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+        User user;
+        if (data.getCount()!=0){
+            String firstName = data.getString(0);
+            String lastName = data.getString(1);
+            String phone = data.getString(2);
+            Long addressId = data.getLong(3);
+            Address address = getAddress(addressId);
+            user = new User(firstName, lastName, email, phone, address);
+        } else {
+            user = new User();
+        }
+        data.close();
+        db.close();
+        return user;
+    }
+
     long checkRestaurantPassword(String email, String password){
         SQLiteDatabase db = this.getReadableDatabase();
         enableForeignKeys(db);

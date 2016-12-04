@@ -36,6 +36,8 @@ public class UserMainActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private int i;
     Button leftButton, rightButton;
+    DatabaseHelper dbHelper;
+    private User loggedIn;
 
     @InjectView(R.id.frame) SwipeFlingAdapterView flingContainer;
 
@@ -45,6 +47,12 @@ public class UserMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
         ButterKnife.inject(this);
+
+        Intent data = getIntent();
+        String email = data.getStringExtra("email");
+        dbHelper = new DatabaseHelper(this);
+        loggedIn = dbHelper.getUserInfo(email);
+
 
         leftButton = (Button) findViewById(R.id.left);
         rightButton = (Button) findViewById(R.id.right);
@@ -79,26 +87,12 @@ public class UserMainActivity extends AppCompatActivity {
 
             @Override
             public void onRightCardExit(Object dataObject) {
-//                new AlertDialog.Builder(UserMainActivity.this)
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                        .setTitle("Confirm Order")
-//                        .setMessage("Are you sure you want to order this food item?")
-//                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener()
-//                        {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                makeToast(UserMainActivity.this, "Food Item Ordered");
-//                            }
-//
-//                        })
-//                        .setNegativeButton("Cancel", null)
-//                        .show();
                 AlertDialog.Builder confirmDialog = new AlertDialog.Builder(
                         UserMainActivity.this);
                 LayoutInflater factory = LayoutInflater.from(UserMainActivity.this);
                 final View view = factory.inflate(R.layout.order_confirmation, null);
                 confirmDialog.setView(view);
-                confirmDialog.setPositiveButton("Place Order!", new DialogInterface.OnClickListener() {
+                confirmDialog.setPositiveButton("Order!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         makeToast(UserMainActivity.this, "Food Item Ordered");
