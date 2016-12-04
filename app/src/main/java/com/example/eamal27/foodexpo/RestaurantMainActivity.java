@@ -155,7 +155,7 @@ public class RestaurantMainActivity extends AppCompatActivity {
 		menuLayout.removeAllViews();
 		for (int menuItem=0;menuItem<menu.size();menuItem++){
 			// TODO: get the image
-			// TODO:
+			// TODO: fix the display to be nicer looking
 
 			// Get the values to display for each menu item
 			String name = menu.get(menuItem).getName();

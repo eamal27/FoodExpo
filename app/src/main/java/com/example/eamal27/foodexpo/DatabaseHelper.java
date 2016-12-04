@@ -14,7 +14,7 @@ import java.util.Locale;
 class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FoodExpoDB";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     // Table names
     private static final String locationTable = "Location";
@@ -42,6 +42,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String restaurantCol = "restaurant";
     private static final String priceCol = "price";
     private static final String descriptionCol = "description";
+	private static final String latitudeCol = "latitude";
+	private static final String longitudeCol = "longitude";
 
     // Table Creation Statements
 
@@ -52,7 +54,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                                                         cityCol + " TEXT NOT NULL, " +
                                                         provCol + " TEXT, " +
                                                         countryCol + " TEXT NOT NULL, " +
-                                                        postalCol + " TEXT NOT NULL);";
+                                                        postalCol + " TEXT NOT NULL, " +
+														latitudeCol + " REAL NOT NULL, " +
+														longitudeCol + " REAL NOT NULL);";
 
     private static final String usersTableCreate = "create table " + usersTable + "(" +
                                                         idCol + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -87,6 +91,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String enableForeignKeys = "PRAGMA foreign_keys=ON";
 
+	// DB upgrade statements
+	// Upgrade from version 1 to version 2
+	String upgradeDBOne = "ALTER TABLE " + foodItemsTable + " ADD COLUMN " + descriptionCol + " TEXT NOT NULL";
+
+	// Upgrade from version 2 to version 3
+	String upgradeDBTwoA = "ALTER TABLE " + locationTable + " ADD COLUMN " + latitudeCol + " REAL NOT NULL";
+	String upgradeDBTwoB = "ALTER TABLE " + locationTable + " ADD COLUMN " + longitudeCol + " REAL NOT NULL";
+
     private Locale locale;
 
     DatabaseHelper(Context context){
@@ -113,7 +125,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
         // Drop old data (or move it over)
         // Recreate DB
 
-
+		if (oldVersion < 2){
+			db.execSQL(upgradeDBOne);
+		}
+		if (oldVersion < 3){
+			db.execSQL(upgradeDBTwoA);
+			db.execSQL(upgradeDBTwoB);
+		}
     }
 
     private void enableForeignKeys(SQLiteDatabase database){
