@@ -55,5 +55,7 @@
     <string name="addItemFailure">Item was not added.</string>
     <string name="editItemSuccess">Item updated successfully!</string>
     <string name="editItemFailure">Item was not updated.</string>
+    <string name="profile">Profile</string>
+    <string name="lbl_user_name">User Name</string>
 
 </resources>

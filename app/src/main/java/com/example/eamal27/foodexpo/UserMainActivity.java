@@ -176,6 +176,11 @@ public class UserMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, PreferencesActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.menu_item_profile:
+                Intent viewProfileIntent = new Intent(this, UserProfile.class);
+                viewProfileIntent.putExtra("email", loggedIn.getEmail());
+                startActivity(viewProfileIntent);
+                return true;
             case R.id.menu_item_logout:
                 // logout and go back to LoginActivity
             default:

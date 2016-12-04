@@ -39,12 +39,12 @@
         <activity android:name=".GetAddressMap" />
         <activity
             android:name=".PreferencesActivity"
-            android:label="Preferences"></activity>
-        <activity android:name=".FoodItemActivity"></activity>
-        <activity android:name=".EditFoodItemActivity"
-                  android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:label="Preferences" />
+        <activity android:name=".FoodItemActivity" />
+        <activity
+            android:name=".EditFoodItemActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".UserProfile"></activity>
     </application>
 
 </manifest>
