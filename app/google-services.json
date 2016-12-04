@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1009143027012",
+    "firebase_url": "https://foodexpoapp.firebaseio.com",
+    "project_id": "foodexpoapp",
+    "storage_bucket": "foodexpoapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009143027012:android:16149f00514b86e3",
+        "android_client_info": {
+          "package_name": "com.example.eamal27.foodexpo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009143027012-jsd4ti373a8p5ij3l1ne70bfdag85kv4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.eamal27.foodexpo",
+            "certificate_hash": "96185297BA45EB681CDBACF3675EC6D5BE57108D"
+          }
+        },
+        {
+          "client_id": "1009143027012-nobapdfnihas1fjs83i2vpucbpbgmofi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv0BbAzZqOGIMu8U25-OuISUkYlhwN74w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009143027012-nobapdfnihas1fjs83i2vpucbpbgmofi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
