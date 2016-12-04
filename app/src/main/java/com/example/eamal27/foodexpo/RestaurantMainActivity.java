@@ -40,7 +40,7 @@ public class RestaurantMainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         loggedIn = dbHelper.getRestaurantInfo(email);
         displayRestaurantInfo();
-		updateMenu();
+		displayMenu();
     }
 
     private void displayRestaurantInfo(){
@@ -83,56 +83,52 @@ public class RestaurantMainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             // When an Image is picked
-            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
-                    && null != data) {
-                // Get the Image from data
+            if (requestCode == RESULT_LOAD_IMG) {
+                if (resultCode == RESULT_OK && null != data) {
+                    // Get the Image from data
 
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                // Get the cursor
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
+                    // Get the cursor
+                    Cursor cursor = getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    // Move to first row
+                    cursor.moveToFirst();
 
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-                ImageView imgView = (ImageView) findViewById(R.id.restaurantLogo);
-                // Set the Image in ImageView after decoding the String
-                imgView.setImageBitmap(BitmapFactory
-                        .decodeFile(imgDecodableString));
-
-            } else {
-                Toast.makeText(this, "You haven't picked an Image",
-                        Toast.LENGTH_LONG).show();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String imgDecodableString = cursor.getString(columnIndex);
+                    cursor.close();
+                    ImageView imgView = (ImageView) findViewById(R.id.restaurantLogo);
+                    // Set the Image in ImageView after decoding the String
+                    imgView.setImageBitmap(BitmapFactory
+                            .decodeFile(imgDecodableString));
+                } else {
+                    Toast.makeText(this, "You haven't picked an Image",
+                            Toast.LENGTH_LONG).show();
+                }
+            } else if (requestCode == requestAddNewFoodItem){
+                String displayText;
+                if(resultCode == returnAddSuccess) {
+                    displayText = getString(R.string.addItemSuccess);
+                }else{
+                    displayText = getString(R.string.addItemFailure);
+                    Toast.makeText(this, "Adding Food Item Failed",
+                            Toast.LENGTH_LONG).show();
+                }
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+                updateMenu();
+                Toast.makeText(context, displayText, duration).show();
+            } else if (requestCode == requestEditFoodItem){
+                if (resultCode == returnEditSuccess){
+                    // Edit the selected item
+                }
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
-
-        if (requestCode == requestAddNewFoodItem){
-			String displayText;
-			if(resultCode == returnAddSuccess) {
-				displayText = getString(R.string.addItemSuccess);
-			}else{
-				displayText = getString(R.string.addItemFailure);
-			}
-			Context context = getApplicationContext();
-			int duration = Toast.LENGTH_SHORT;
-			updateMenu();
-			Toast.makeText(context, displayText, duration).show();
-        }
-
-        if (requestCode == requestEditFoodItem){
-            if (resultCode == returnEditSuccess){
-                // Edit the selected item
-            }
-
-        }
-
     }
 
     public void editFoodItem(View view){
@@ -146,40 +142,42 @@ public class RestaurantMainActivity extends AppCompatActivity {
     }
 
 	private void updateMenu(){
-		menu = dbHelper.getMenu(loggedIn.getEmail());
-		displayMenu();
+        menu = dbHelper.getMenu(loggedIn.getEmail());
+        displayMenu();
 	}
 
 	private void displayMenu(){
-		LinearLayout menuLayout = (LinearLayout)findViewById(R.id.menuLayout);
-		menuLayout.removeAllViews();
-		for (int menuItem=0;menuItem<menu.size();menuItem++){
-			// TODO: get the image
-			// TODO: fix the display to be nicer looking
+        if (menu != null) {
+            LinearLayout menuLayout = (LinearLayout) findViewById(R.id.menuLayout);
+            menuLayout.removeAllViews();
+            for (int menuItem = 0; menuItem < menu.size(); menuItem++) {
+                // TODO: get the image
+                // TODO: fix the display to be nicer looking
 
-			// Get the values to display for each menu item
-			String name = menu.get(menuItem).getName();
-			String price = Float.toString(menu.get(menuItem).getPrice());
-			String description = menu.get(menuItem).getDescription();
+                // Get the values to display for each menu item
+                String name = menu.get(menuItem).getName();
+                String price = Float.toString(menu.get(menuItem).getPrice());
+                String description = menu.get(menuItem).getDescription();
 
-			// Create a new TextView and add the correct text to each
-			TextView displayName = new TextView(this);
-			TextView displayPrice = new TextView(this);
-			TextView displayDescription = new TextView(this);
-			displayName.setText(name);
-			displayPrice.setText(price);
-			displayDescription.setText(description);
+                // Create a new TextView and add the correct text to each
+                TextView displayName = new TextView(this);
+                TextView displayPrice = new TextView(this);
+                TextView displayDescription = new TextView(this);
+                displayName.setText(name);
+                displayPrice.setText(price);
+                displayDescription.setText(description);
 
-			// Add the TextViews to a new Linear Layout
-			LinearLayout displayItem = new LinearLayout(this);
-			displayItem.setOrientation(LinearLayout.HORIZONTAL);
-			displayItem.addView(displayName);
-			displayItem.addView(displayPrice);
-			displayItem.addView(displayDescription);
+                // Add the TextViews to a new Linear Layout
+                LinearLayout displayItem = new LinearLayout(this);
+                displayItem.setOrientation(LinearLayout.HORIZONTAL);
+                displayItem.addView(displayName);
+                displayItem.addView(displayPrice);
+                displayItem.addView(displayDescription);
 
-			// Add the new linearlayout into the scrollview
-			menuLayout.addView(displayItem);
-		}
+                // Add the new linearlayout into the scrollview
+                menuLayout.addView(displayItem);
+            }
+        }
 	}
 }
 
