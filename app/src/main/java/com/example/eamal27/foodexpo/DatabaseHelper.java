@@ -93,11 +93,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 	// DB upgrade statements
 	// Upgrade from version 1 to version 2
-	String upgradeDBOne = "ALTER TABLE " + foodItemsTable + " ADD COLUMN " + descriptionCol + " TEXT NOT NULL";
+	// String upgradeDBOne = "ALTER TABLE " + foodItemsTable + " ADD COLUMN " + descriptionCol + " TEXT NOT NULL DEFAULT ''";
 
 	// Upgrade from version 2 to version 3
-	String upgradeDBTwoA = "ALTER TABLE " + locationTable + " ADD COLUMN " + latitudeCol + " REAL NOT NULL";
-	String upgradeDBTwoB = "ALTER TABLE " + locationTable + " ADD COLUMN " + longitudeCol + " REAL NOT NULL";
+	String upgradeDBTwoA = "ALTER TABLE " + locationTable + " ADD COLUMN " + latitudeCol + " REAL NOT NULL DEFAULT 0.0";
+	String upgradeDBTwoB = "ALTER TABLE " + locationTable + " ADD COLUMN " + longitudeCol + " REAL NOT NULL DEFAULT 0.0";
 
     private Locale locale;
 
@@ -125,9 +125,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
         // Drop old data (or move it over)
         // Recreate DB
 
-		if (oldVersion < 2){
+	/*	if (oldVersion < 2){
 			db.execSQL(upgradeDBOne);
 		}
+		*/
 		if (oldVersion < 3){
 			db.execSQL(upgradeDBTwoA);
 			db.execSQL(upgradeDBTwoB);
@@ -196,6 +197,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         values.put(provCol, address.getAdminArea());
         values.put(countryCol, address.getCountryName());
         values.put(postalCol, address.getPostalCode());
+		values.put(latitudeCol, address.getLatitude());
+		values.put(longitudeCol, address.getLongitude());
         long returnVal = db.insert(locationTable,null,values);
         db.close();
         return returnVal;
@@ -206,7 +209,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         enableForeignKeys(db);
         String[] columns = {idCol};
-        String whereClause = addressOneCol + " = ? AND " +
+
+		// Ignoring the latitude and longitude
+		String whereClause = addressOneCol + " = ? AND " +
                              addressTwoCol + " = ? AND " +
                              cityCol + " = ? AND " +
                              provCol + " = ? AND " +
@@ -241,7 +246,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         String[] whereArgs = {email};
         Cursor data = db.query(usersTable, columns, whereClause, whereArgs, null, null, null);
         data.moveToFirst();
-        long returnVal = -1;
+	    long returnVal = -1;
         if (data.getCount()!=0){
             returnVal = data.getInt(0);
         }
@@ -355,7 +360,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     Address getAddress(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         enableForeignKeys(db);
-        String[] columns = {addressOneCol, addressTwoCol, cityCol, provCol, countryCol, postalCol};
+        String[] columns = {addressOneCol, addressTwoCol, cityCol, provCol, countryCol, postalCol, latitudeCol, longitudeCol};
         String whereClause = idCol + " = ? ";
         String[] whereArgs = {Long.toString(id)};
         Cursor data = db.query(locationTable, columns, whereClause, whereArgs, null, null, null);
@@ -369,6 +374,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String prov = data.getString(3);
             String country = data.getString(4);
             String postal = data.getString(5);
+			float latitude = data.getFloat(6);
+			float longitude = data.getFloat(7);
 
             address.setAddressLine(0,addressOne);
             address.setAddressLine(1,addressTwo);
@@ -376,6 +383,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             address.setAdminArea(prov);
             address.setCountryName(country);
             address.setPostalCode(postal);
+			address.setLatitude(latitude);
+			address.setLongitude(longitude);
         }
         data.close();
         db.close();

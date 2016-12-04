@@ -3,6 +3,7 @@ package com.example.eamal27.foodexpo;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +11,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 public class SignUpRestaurantActivity extends AppCompatActivity {
 
     private Address address;
+	private Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,7 @@ public class SignUpRestaurantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_restaurant);
         Locale locale = getResources().getConfiguration().locale;
         address = new Address(locale);
+		geocoder = new Geocoder(this, locale);
     }
 
     public void getLocation(View view){
@@ -48,6 +53,20 @@ public class SignUpRestaurantActivity extends AppCompatActivity {
                 address.setAdminArea(prov);
                 address.setCountryName(country);
                 address.setPostalCode(postal);
+				address.setLatitude(0.0);
+				address.setLongitude(0.0);
+
+                // Use a Geocoder to get the longitude and latitude
+				try{
+					List<Address> getCoords = geocoder.getFromLocationName(addressOne, 1);
+					if (getCoords.size()!=0){
+						Address getCoordsAddress = getCoords.get(0);
+						address.setLatitude(getCoordsAddress.getLatitude());
+						address.setLongitude(getCoordsAddress.getLongitude());
+					}
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
 
                 EditText restaurantNameET = (EditText)findViewById(R.id.edittext_restaurantName);
                 EditText businessIdET = (EditText)findViewById(R.id.edittext_businessId);

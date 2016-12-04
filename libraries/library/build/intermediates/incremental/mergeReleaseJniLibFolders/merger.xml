@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/eamal27/Workspace/Repositories/FoodExpoApp/libraries/library/src/main/jniLibs"/></dataSet><dataSet config="release"><source path="/Users/eamal27/Workspace/Repositories/FoodExpoApp/libraries/library/src/release/jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\Users\100484424\AndroidStudioProjects\FoodExpo\FoodExpo\libraries\library\src\main\jniLibs"/></dataSet><dataSet config="release"><source path="C:\Users\100484424\AndroidStudioProjects\FoodExpo\FoodExpo\libraries\library\src\release\jniLibs"/></dataSet></merger>
