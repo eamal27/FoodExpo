@@ -174,6 +174,7 @@ public class UserMainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_item_preferences:
                 Intent intent = new Intent(this, PreferencesActivity.class);
+                intent.putExtra("email", loggedIn.getEmail());
                 startActivity(intent);
                 return true;
             case R.id.menu_item_profile:

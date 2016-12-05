@@ -44,6 +44,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String descriptionCol = "description";
 	private static final String latitudeCol = "latitude";
 	private static final String longitudeCol = "longitude";
+    private static final String radiusCol = "radius";
 
     // Table Creation Statements
 
@@ -66,6 +67,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                                                         passwordCol + " TEXT NOT NULL, " +
                                                         phoneCol + " TEXT NOT NULL, " +
                                                         locationCol + " INTEGER NOT NULL, " +
+                                                        radiusCol + " INTEGER NOT NULL, " +
                                                         "FOREIGN KEY (" + locationCol + ") REFERENCES " +
                                                                         locationTable + "(" + idCol + "));";
 
@@ -157,6 +159,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         values.put(passwordCol, password);
         values.put(phoneCol, user.getPhone());
         values.put(locationCol, locationVal);
+        values.put(radiusCol, 2);
         long returnVal = db.insert(usersTable, null, values);
         db.close();
         return returnVal;
@@ -313,6 +316,37 @@ class DatabaseHelper extends SQLiteOpenHelper {
         data.close();
         db.close();
         return user;
+    }
+
+    long updateUserRadius(int rad, String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        enableForeignKeys(db);
+        String whereClause = emailCol + " = ? ";
+        String[]whereArgs = {email};
+        ContentValues values = new ContentValues();
+        values.put(radiusCol, rad);
+        long returnVal = db.update(usersTable, values, whereClause, whereArgs);
+        db.close();
+        return returnVal;
+    }
+
+    int getUserRadius(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        enableForeignKeys(db);
+        String[] columns = {radiusCol};
+        String whereClause = emailCol + " = ? ";
+        String[]whereArgs = {email};
+        Cursor data = db.query(usersTable, columns, whereClause, whereArgs, null, null, null);
+        data.moveToFirst();
+        int radius;
+        if (data.getCount()!=0){
+            radius = data.getInt(0);
+        } else {
+            radius = -1;
+        }
+        data.close();
+        db.close();
+        return radius;
     }
 
     long checkRestaurantPassword(String email, String password){
