@@ -96,6 +96,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:layout_marginTop="9dp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/getDescription"
         android:layout_below="@id/descriptionLabel"
         android:layout_alignParentLeft="true"

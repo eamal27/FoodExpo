@@ -18,6 +18,8 @@ public class EditFoodItemActivity extends AppCompatActivity {
 	private static final int RESULT_LOAD_IMG = 1;
 	DatabaseHelper dbHelper;
 	String email;
+	int type;
+	FoodItem toEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,23 @@ public class EditFoodItemActivity extends AppCompatActivity {
 		dbHelper = new DatabaseHelper(this);
 		Intent data = getIntent();
 		email = data.getStringExtra("email");
+		type = data.getIntExtra("requestCode",0);
+
+		// If the request code is an edit then we will fill the fields in
+		if (type==RestaurantMainActivity.requestEditFoodItem){
+			EditText getItemName = (EditText)findViewById(R.id.getItemName);
+			EditText getItemPrice = (EditText)findViewById(R.id.getItemPrice);
+			EditText getDescription = (EditText)findViewById(R.id.getDescription);
+
+			String itemName = data.getStringExtra("itemName");
+			String itemPrice = data.getStringExtra("itemPrice");
+			String itemDescription = data.getStringExtra("itemDescription");
+			toEdit = new FoodItem(itemName,Float.parseFloat(itemPrice),itemDescription);
+
+			getItemName.setText(itemName);
+			getItemPrice.setText(itemPrice);
+			getDescription.setText(itemDescription);
+		}
     }
 
     public void editImage(View view){
@@ -64,7 +83,7 @@ public class EditFoodItemActivity extends AppCompatActivity {
 				}
 			}
 		} catch (Exception e) {
-			Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+			Toast.makeText(this, getString(R.string.error), Toast.LENGTH_LONG)
 					.show();
 		}
 	}
@@ -73,8 +92,6 @@ public class EditFoodItemActivity extends AppCompatActivity {
 
 		//Check that all the fields are filled in
 		if (checkPage()){
-
-			Intent resultIntent = new Intent();
 			// Add the item to the database
 
 			EditText getItemName = (EditText)findViewById(R.id.getItemName);
@@ -85,14 +102,20 @@ public class EditFoodItemActivity extends AppCompatActivity {
 			String itemPrice = getItemPrice.getText().toString();
 			Float price = Float.parseFloat(itemPrice);
 			String description = getDescription.getText().toString();
-
 			FoodItem newItem = new FoodItem(itemName,price,description);
 
-			String returnText;
-			if (dbHelper.addFoodItem(newItem, email)!=-1){
-				setResult(RestaurantMainActivity.returnAddSuccess);
+			if (type==RestaurantMainActivity.requestAddNewFoodItem){
+				if (dbHelper.addFoodItem(newItem, email)!=-1){
+					setResult(RestaurantMainActivity.returnAddSuccess);
+				}else{
+					setResult(RestaurantMainActivity.returnAddFailure);
+				}
 			}else{
-				setResult(RestaurantMainActivity.returnAddFailure);
+				if (dbHelper.editFoodItem(toEdit,newItem,email)!=0){
+					setResult(RestaurantMainActivity.returnEditSuccess);
+				}else{
+					setResult(RestaurantMainActivity.returnEditFailure);
+				}
 			}
 			finish();
 		}

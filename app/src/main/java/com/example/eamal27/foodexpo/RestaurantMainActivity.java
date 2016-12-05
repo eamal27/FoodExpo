@@ -4,14 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Address;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +33,7 @@ public class RestaurantMainActivity extends AppCompatActivity {
 
     private Restaurant loggedIn;
 	private ArrayList<FoodItem> menu;
+	private GridLayout selected;
     DatabaseHelper dbHelper;
 
     @Override
@@ -40,7 +45,8 @@ public class RestaurantMainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         loggedIn = dbHelper.getRestaurantInfo(email);
         displayRestaurantInfo();
-		displayMenu();
+		updateMenu();
+		selected = null;
     }
 
     private void displayRestaurantInfo(){
@@ -107,37 +113,66 @@ public class RestaurantMainActivity extends AppCompatActivity {
                     Toast.makeText(this, "You haven't picked an Image",
                             Toast.LENGTH_LONG).show();
                 }
-            } else if (requestCode == requestAddNewFoodItem){
+            }
+			// When a new food item is added
+			else if (requestCode == requestAddNewFoodItem){
                 String displayText;
                 if(resultCode == returnAddSuccess) {
                     displayText = getString(R.string.addItemSuccess);
                 }else{
                     displayText = getString(R.string.addItemFailure);
-                    Toast.makeText(this, "Adding Food Item Failed",
-                            Toast.LENGTH_LONG).show();
                 }
                 Context context = getApplicationContext();
                 int duration = Toast.LENGTH_SHORT;
                 updateMenu();
                 Toast.makeText(context, displayText, duration).show();
-            } else if (requestCode == requestEditFoodItem){
-                if (resultCode == returnEditSuccess){
-                    // Edit the selected item
-                }
             }
+			// When an item has been edited
+			else if (requestCode == requestEditFoodItem){
+				String displayText;
+				if(resultCode == returnEditSuccess) {
+					displayText = getString(R.string.editItemSuccess);
+				}else{
+					displayText = getString(R.string.editItemFailure);
+				}
+				Context context = getApplicationContext();
+				int duration = Toast.LENGTH_SHORT;
+				updateMenu();
+				Toast.makeText(context, displayText, duration).show();
+			}
+
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_LONG).show();
         }
     }
 
     public void editFoodItem(View view){
 
+		if (selected!=null) {
+			TextView getItemName = (TextView) selected.getChildAt(0);
+			TextView getItemPrice = (TextView) selected.getChildAt(1);
+			TextView getItemDescription = (TextView) selected.getChildAt(2);
+
+			String itemName = getItemName.getText().toString();
+			String itemPrice = getItemPrice.getText().toString();
+			String itemDescription = getItemDescription.getText().toString();
+
+			Intent editFoodItem = new Intent(this, EditFoodItemActivity.class);
+			editFoodItem.putExtra("email", loggedIn.getEmail());
+			editFoodItem.putExtra("requestCode",requestEditFoodItem);
+			editFoodItem.putExtra("itemName",itemName);
+			editFoodItem.putExtra("itemPrice",itemPrice);
+			editFoodItem.putExtra("itemDescription",itemDescription);
+			startActivityForResult(editFoodItem,requestEditFoodItem);
+		}else{
+			Toast.makeText(this, getString(R.string.please_select_item), Toast.LENGTH_SHORT).show();
+		}
     }
 
     public void addFoodItem(View view){
         Intent addFoodItem = new Intent(this, EditFoodItemActivity.class);
         addFoodItem.putExtra("email", loggedIn.getEmail());
+		addFoodItem.putExtra("requestCode", requestAddNewFoodItem);
         startActivityForResult(addFoodItem,requestAddNewFoodItem);
     }
 
@@ -167,14 +202,31 @@ public class RestaurantMainActivity extends AppCompatActivity {
                 displayPrice.setText(price);
                 displayDescription.setText(description);
 
-                // Add the TextViews to a new Linear Layout
-                LinearLayout displayItem = new LinearLayout(this);
-                displayItem.setOrientation(LinearLayout.HORIZONTAL);
-                displayItem.addView(displayName);
-                displayItem.addView(displayPrice);
-                displayItem.addView(displayDescription);
+				// Set the correct layout params for each TextView to line them up nicely
+				GridLayout.LayoutParams displayNameParams = new GridLayout.LayoutParams();
+				GridLayout.LayoutParams displayPriceParams = new GridLayout.LayoutParams();
+				GridLayout.LayoutParams displayDescriptionParams = new GridLayout.LayoutParams();
 
-                // Add the new linearlayout into the scrollview
+                // Add the TextViews to a new Relative Layout
+                final GridLayout displayItem = new GridLayout(this);
+
+				displayItem.setClickable(true);
+				// Add the onclick functionality to each display item
+				displayItem.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view){
+						if (selected!=null){
+							selected.setBackgroundColor(Color.WHITE);
+						}
+						selected = displayItem;
+						selected.setBackgroundColor(Color.LTGRAY);
+					}
+				});
+                displayItem.addView(displayName, displayNameParams);
+                displayItem.addView(displayPrice, displayPriceParams);
+                displayItem.addView(displayDescription, displayDescriptionParams);
+
+                // Add the new Relative Layout into the scrollview
                 menuLayout.addView(displayItem);
             }
         }

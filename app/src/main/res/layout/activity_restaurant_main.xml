@@ -14,9 +14,52 @@
     <TextView
         android:id="@+id/menuItemsLabel"
         android:text="@string/menuItems"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="12"
+        android:rowCount="1"
+        android:alignmentMode="alignBounds"
+        android:useDefaultMargins="true"
+        android:layout_below="@id/menuItemsLabel"
+        android:columnOrderPreserved="false"
+        android:id="@+id/menuItemHeaders">
+
+        <TextView
+            android:id="@+id/foodItemName"
+            android:text="@string/food_item_name"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_columnSpan="4"
+            android:layout_rowSpan="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="@string/price"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_columnSpan="4"
+            android:layout_rowSpan="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"/>
+        <TextView
+            android:text="@string/description"
+            android:textSize="12sp"
+            android:layout_columnSpan="4"
+            android:layout_rowSpan="1"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </GridLayout>
 
     <ScrollView
         android:id="@+id/displayMenuItems"
@@ -25,7 +68,7 @@
         android:layout_above="@+id/editItemButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/menuItemsLabel">
+        android:layout_below="@id/menuItemHeaders">
 
         <LinearLayout
             android:orientation="vertical"

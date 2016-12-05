@@ -34,8 +34,6 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // add new user to users database
-        // add new restaurant to restaurants database
     }
 }
 

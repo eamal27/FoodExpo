@@ -443,6 +443,29 @@ class DatabaseHelper extends SQLiteOpenHelper {
 		return returnVal;
 	}
 
+    int editFoodItem(FoodItem oldItem, FoodItem newItem, String email){
+		long restaurantId = checkRestaurantUsername(email);
+		SQLiteDatabase db = getWritableDatabase();
+		enableForeignKeys(db);
+		ContentValues values = new ContentValues();
+		values.put(nameCol, newItem.getName());
+		values.put(priceCol, newItem.getPrice());
+		values.put(descriptionCol, newItem.getDescription());
+		String whereClause = nameCol + " = ? AND " +
+							priceCol + " = ? AND " +
+							descriptionCol + " = ? AND " +
+							restaurantCol + " = ? ";
+
+		String[] whereArgs = {oldItem.getName(),
+								Float.toString(oldItem.getPrice()),
+								oldItem.getDescription(),
+								Long.toString(restaurantId)};
+
+		int returnVal = db.update(foodItemsTable,values, whereClause, whereArgs);
+		db.close();
+		return returnVal;
+    }
+
 	public ArrayList<FoodItem> getMenu(String email){
 
 		ArrayList<FoodItem> menu = new ArrayList<FoodItem>();

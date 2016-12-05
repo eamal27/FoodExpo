@@ -57,5 +57,7 @@
     <string name="editItemFailure">Item was not updated.</string>
     <string name="profile">Profile</string>
     <string name="lbl_user_name">User Name</string>
+    <string name="please_select_item">Please select an item to edit</string>
+    <string name="error">Something went wrong</string>
 
 </resources>
