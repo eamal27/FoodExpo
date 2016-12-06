@@ -4,6 +4,7 @@ public class FoodItem {
     private String name;
     private Float price;
     private String description;
+    private String restaurantName;
 
     public FoodItem(String name, Float price, String description) {
         this.name = name;
@@ -33,5 +34,13 @@ public class FoodItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 }

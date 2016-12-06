@@ -17,8 +17,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -35,8 +37,8 @@ import butterknife.OnClick;
 public class UserMainActivity extends AppCompatActivity {
     public final static int UPDATE_RADIUS_REQUEST = 4444;
 
-    private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<FoodItem> al;
+    private ItemsAdapter arrayAdapter;
     private int i;
     Button leftButton, rightButton;
     DatabaseHelper dbHelper;
@@ -63,14 +65,17 @@ public class UserMainActivity extends AppCompatActivity {
         leftButton = (Button) findViewById(R.id.left);
         rightButton = (Button) findViewById(R.id.right);
 
-        al = new ArrayList<>();
-        al.add("12.00");
-        al.add("6.99");
-        al.add("14.99");
-        al.add("18.99");
-        al.add("7.00");
+        al = new ArrayList<FoodItem>();
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.foodItemPrice, al );
+        loadCards();
+
+        // create dummy food items
+//        FoodItem fi = new FoodItem("Burrito",8.99f,"Best Burrito Ever!");
+//        FoodItem fi2 = new FoodItem("Pizza",12.99f,"Large Pepperoni Pizza!");
+//        al.add(fi);
+//        al.add(fi2);
+
+        arrayAdapter = new ItemsAdapter(this, al);
 
 
         flingContainer.setAdapter(arrayAdapter);
@@ -93,10 +98,12 @@ public class UserMainActivity extends AppCompatActivity {
 
             @Override
             public void onRightCardExit(Object dataObject) {
+
                 AlertDialog.Builder confirmDialog = new AlertDialog.Builder(
                         UserMainActivity.this);
                 LayoutInflater factory = LayoutInflater.from(UserMainActivity.this);
-                final View view = factory.inflate(R.layout.order_confirmation, null);
+                View view = factory.inflate(R.layout.order_confirmation, null);
+
                 confirmDialog.setView(view);
                 confirmDialog.setPositiveButton("Order!", new DialogInterface.OnClickListener() {
                     @Override
@@ -137,6 +144,10 @@ public class UserMainActivity extends AppCompatActivity {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
             Intent intent = new Intent(UserMainActivity.this, FoodItemActivity.class);
+            intent.putExtra("name", al.get(itemPosition).getName());
+            intent.putExtra("price", al.get(itemPosition).getPrice());
+            intent.putExtra("description", al.get(itemPosition).getDescription());
+            intent.putExtra("restaurantName", al.get(itemPosition).getRestaurantName());
             startActivity(intent);
             }
         });
@@ -199,6 +210,7 @@ public class UserMainActivity extends AppCompatActivity {
                 radius = data.getExtras().getInt("radius");
                 Log.i("radius",radius+"");
                 loadCards();
+                arrayAdapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(this, "Unable to store radius in database", Toast.LENGTH_LONG)
                         .show();
@@ -249,15 +261,46 @@ public class UserMainActivity extends AppCompatActivity {
 
 //    private void loadCards(ArrayList<Restaurant> restaurants){
     private void loadCards(){
-        al.add("Pizza1");
-        al.add("Pizza2");
-        al.add("Pizza3");
-        al.add("Pizza4");
-        arrayAdapter.notifyDataSetChanged();
-        getRestaurants(loggedIn.getAddress());
+        ArrayList<Restaurant> restaurants = getRestaurants(loggedIn.getAddress());
+        ArrayList<FoodItem> foodItems = new ArrayList<FoodItem>();
+
+        for (int j = 0; j < restaurants.size(); j++) {
+            Restaurant restaurant = restaurants.get(j);
+            ArrayList<FoodItem> items = dbHelper.getMenu(restaurant.getEmail());
+
+            for (int k = 0; k < items.size(); k++) {
+                items.get(k).setRestaurantName(restaurant.getName());
+            }
+
+            foodItems.addAll(items);
+        }
+
+        al.addAll(foodItems);
     }
 
+    public class ItemsAdapter extends ArrayAdapter<FoodItem> {
+        public ItemsAdapter(Context context, ArrayList<FoodItem> foodItems) {
+            super(context, 0, foodItems);
+        }
 
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Get the data item for this position
+            FoodItem foodItem = getItem(position);
+            // Check if an existing view is being reused, otherwise inflate the view
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
+            }
+            // Lookup view for data population
+            TextView price = (TextView) convertView.findViewById(R.id.foodItemPrice);
+//            TextView tvHome = (TextView) convertView.findViewById(R.id.tvHome);
+            // Populate the data into the template view using the data object
+            price.setText(foodItem.getPrice()+"");
+//            tvHome.setText(user.hometown);
+            // Return the completed view to render on screen
+            return convertView;
+        }
+    }
 
 
 }
