@@ -2,10 +2,12 @@ package com.example.eamal27.foodexpo;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Address;
+import android.location.Location;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -390,7 +392,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return restaurant;
     }
 
-    // Returns an address object given it's id value
+    // Returns an address object given its id value
     Address getAddress(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         enableForeignKeys(db);
@@ -489,5 +491,92 @@ class DatabaseHelper extends SQLiteOpenHelper {
 		return menu;
 	}
 
+    private final String restaurantLocationsQuery = "SELECT " +
+            restaurantTable+"."+emailCol+", "+
+            locationTable+"."+latitudeCol+", "+
+            locationTable+"."+longitudeCol +
+            " FROM " + restaurantTable + " INNER JOIN " +
+            locationTable +
+            " ON "+restaurantTable+"."+locationCol + "="+locationTable+"."+idCol;
+
+//    public ArrayList<Restaurant> getRestaurants(ArrayList<Integer> restaurantIDs) {
+//        ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        enableForeignKeys(db);
+//        String[] columns = {nameCol, businessIdCol, phoneCol, locationCol};
+//        String whereClause = emailCol + " = ? ";
+//        String[]whereArgs = {email};
+//        Cursor data = db.query(restaurantTable, columns, whereClause, whereArgs, null, null, null);
+//        data.moveToFirst();
+//        Restaurant restaurant;
+//        if (data.getCount()!=0){
+//            String name = data.getString(0);
+//            String businessId = data.getString(1);
+//            String phone = data.getString(2);
+//            Long addressId = data.getLong(3);
+//            Address address = getAddress(addressId);
+//            restaurant = new Restaurant(name, businessId, email, phone, address);
+//        } else {
+//            restaurant = new Restaurant();
+//        }
+//        data.close();
+//        db.close();
+//        return restaurant;
+//
+//        return restaurants;
+//    }
+
+//    public Restaurant getRestaurantsById(int restaurantId) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        enableForeignKeys(db);
+//        String[] columns = {nameCol, businessIdCol, emailCol, phoneCol, locationCol};
+//        String whereClause = idCol + " = ? ";
+//        String[]whereArgs = {String.valueOf(restaurantId)};
+//        Cursor data = db.query(restaurantTable, columns, whereClause, whereArgs, null, null, null);
+//        data.moveToFirst();
+//        Restaurant restaurant;
+//        if (data.getCount()!=0){
+//            String name = data.getString(0);
+//            String businessId = data.getString(1);
+//            String phone = data.getString(2);
+//            Long addressId = data.getLong(3);
+//            Address address = getAddress(addressId);
+//            restaurant = new Restaurant(name, businessId, email, phone, address);
+//        } else {
+//            restaurant = new Restaurant();
+//        }
+//        data.close();
+//        db.close();
+//        return restaurant;
+//    }
+
+    public ArrayList<Restaurant> getRestaurantsWithinRadius(Address address, int radius) {
+        ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+        ArrayList<Integer> restaurantIDs = new ArrayList<Integer>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor data = db.rawQuery(restaurantLocationsQuery, null);
+
+        Location userLoc = new Location("User Location");
+        userLoc.setLatitude(address.getLatitude());
+        userLoc.setLongitude(address.getLongitude());
+
+        while (data.moveToNext()){
+            Location restLoc = new Location("Restaurant");
+            restLoc.setLatitude(data.getFloat(1));
+            restLoc.setLongitude(data.getFloat(2));
+            float distanceInMeters = userLoc.distanceTo(restLoc);
+            if (distanceInMeters < (radius*1000)) {
+                // if within radius, add restaurant
+                Log.i("Restaurants in Radius:",data.getString(0));
+                Restaurant restaurant = getRestaurantInfo(data.getString(0));
+                restaurants.add(restaurant);
+            }
+        }
+        data.close();
+        db.close();
+
+        return restaurants;
+    }
 
 }

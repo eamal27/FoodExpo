@@ -3,6 +3,7 @@ package com.example.eamal27.foodexpo;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -64,9 +65,13 @@ public class PreferencesActivity extends AppCompatActivity {
     }
 
     public void save(View view) {
-
         // save preferences
-        dbHelper.updateUserRadius(radius, email);
-        finish();
+        if (dbHelper.updateUserRadius(radius, email)!=-1) {
+            Intent result = new Intent();
+            result.putExtra("radius",radius);
+            setResult(UserMainActivity.RESULT_OK, result);
+            finish();
+        }
+
     }
 }

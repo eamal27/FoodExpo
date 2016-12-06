@@ -3,11 +3,15 @@ package com.example.eamal27.foodexpo;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -72,6 +76,7 @@ public class EditFoodItemActivity extends AppCompatActivity {
 
 					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 					String imgDecodableString = cursor.getString(columnIndex);
+
 					cursor.close();
 					ImageView imgView = (ImageView) findViewById(R.id.foodItemImage);
 					// Set the Image in ImageView after decoding the String
@@ -126,10 +131,12 @@ public class EditFoodItemActivity extends AppCompatActivity {
 		EditText getItemName = (EditText)findViewById(R.id.getItemName);
 		EditText getItemPrice = (EditText)findViewById(R.id.getItemPrice);
 		EditText getDescription = (EditText)findViewById(R.id.getDescription);
+		ImageView getItemImage = (ImageView)findViewById(R.id.foodItemImage);
 
 		String itemName = getItemName.getText().toString();
 		String itemPrice = getItemPrice.getText().toString();
 		String description = getDescription.getText().toString();
+		Drawable.ConstantState constantState = getItemImage.getDrawable().getConstantState();
 
 		Context context = getApplicationContext();
 		String errorMessage="";
@@ -147,6 +154,11 @@ public class EditFoodItemActivity extends AppCompatActivity {
 			toFocus = getItemPrice;
 		} else if (description.equals("")) {
 			errorMessage = "Please enter a description for your item";
+			showError = true;
+			toFocus = getDescription;
+		}  else if (constantState ==
+				getResources().getDrawable(R.mipmap.ic_launcher).getConstantState()) {
+			errorMessage = "Please upload an image for your item";
 			showError = true;
 			toFocus = getDescription;
 		}

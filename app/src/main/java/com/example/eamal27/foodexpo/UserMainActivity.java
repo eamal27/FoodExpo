@@ -3,6 +3,7 @@ package com.example.eamal27.foodexpo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -31,6 +33,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class UserMainActivity extends AppCompatActivity {
+    public final static int UPDATE_RADIUS_REQUEST = 4444;
 
     private ArrayList<String> al;
     private ArrayAdapter<String> arrayAdapter;
@@ -38,6 +41,8 @@ public class UserMainActivity extends AppCompatActivity {
     Button leftButton, rightButton;
     DatabaseHelper dbHelper;
     private User loggedIn;
+    private int radius;
+    private String email;
 
     @InjectView(R.id.frame) SwipeFlingAdapterView flingContainer;
 
@@ -49,9 +54,10 @@ public class UserMainActivity extends AppCompatActivity {
         ButterKnife.inject(this);
 
         Intent data = getIntent();
-        String email = data.getStringExtra("email");
+        email = data.getStringExtra("email");
         dbHelper = new DatabaseHelper(this);
         loggedIn = dbHelper.getUserInfo(email);
+        radius = dbHelper.getUserRadius(email);
 
 
         leftButton = (Button) findViewById(R.id.left);
@@ -127,14 +133,11 @@ public class UserMainActivity extends AppCompatActivity {
             }
         });
 
-
-        // Optionally add an OnItemClickListener
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-//                makeToast(UserMainActivity.this, "Clicked!");
-                Intent intent = new Intent(UserMainActivity.this, FoodItemActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(UserMainActivity.this, FoodItemActivity.class);
+            startActivity(intent);
             }
         });
 
@@ -175,7 +178,7 @@ public class UserMainActivity extends AppCompatActivity {
             case R.id.menu_item_preferences:
                 Intent intent = new Intent(this, PreferencesActivity.class);
                 intent.putExtra("email", loggedIn.getEmail());
-                startActivity(intent);
+                startActivityForResult(intent, UPDATE_RADIUS_REQUEST);
                 return true;
             case R.id.menu_item_profile:
                 Intent viewProfileIntent = new Intent(this, UserProfile.class);
@@ -189,6 +192,19 @@ public class UserMainActivity extends AppCompatActivity {
         }
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UPDATE_RADIUS_REQUEST) {
+            if (resultCode == RESULT_OK && null != data) {
+                radius = data.getExtras().getInt("radius");
+                Log.i("radius",radius+"");
+                loadCards();
+            } else {
+                Toast.makeText(this, "Unable to store radius in database", Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
+    }
 
     private Location getLocation(){
         LocationManager locationManager;
@@ -221,14 +237,24 @@ public class UserMainActivity extends AppCompatActivity {
         return currentLocation;
     }
 
-    private ArrayList<Restaurant> getRestaurants(Location location){
+    private ArrayList<Restaurant> getRestaurants(Address address){
         ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+        restaurants = dbHelper.getRestaurantsWithinRadius(address, radius);
+
+        TextView resultsText = (TextView)findViewById(R.id.txtNumberOfRestaurants);
+        resultsText.setText("Results from " + restaurants.size() + " restaurants");
 
         return restaurants;
     }
 
-    private void displayItem(FoodItem item){
-
+//    private void loadCards(ArrayList<Restaurant> restaurants){
+    private void loadCards(){
+        al.add("Pizza1");
+        al.add("Pizza2");
+        al.add("Pizza3");
+        al.add("Pizza4");
+        arrayAdapter.notifyDataSetChanged();
+        getRestaurants(loggedIn.getAddress());
     }
 
 
